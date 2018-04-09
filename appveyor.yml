@@ -13,7 +13,7 @@ install:
 
 build: off
 
-test-script:
+test_script:
   - node --version
   - gulp package
 
