@@ -20,6 +20,6 @@ test_script:
 
 artifacts:
   - path: '**\*.vsix'
+    name: 'VSTS-Package'
 cache:
-  - "%LOCALAPPDATA%\\npm"
   - node_modules -> package.json          

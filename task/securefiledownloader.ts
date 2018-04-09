@@ -8,6 +8,7 @@ import { ITaskAgentApi } from "vso-node-api/TaskAgentApi";
 
 export class SecureFileDownloader {
     serverConnection: vsts.WebApi;
+    tempDownloadPath: string;
 
     constructor() {
         let serverUrl: string = tl.getVariable("System.TeamFoundationCollectionUri");
@@ -18,32 +19,31 @@ export class SecureFileDownloader {
     }
 
     async downloadSecureFile(secureFileId: string): Promise<string> {
-        let tempDownloadPath: string = this.getSecureFileTempDownloadPath(secureFileId);
+        this.tempDownloadPath = this.getSecureFileTempDownloadPath(secureFileId);
 
-        tl.debug("Downloading secure file contents to: " + tempDownloadPath);
-        let file: NodeJS.WritableStream = fs.createWriteStream(tempDownloadPath);
+        tl.debug("Downloading secure file contents to: " + this.tempDownloadPath);
+        let file: NodeJS.WritableStream = fs.createWriteStream(this.tempDownloadPath);
 
-        let taskAgentApi : ITaskAgentApi = await this.serverConnection.getTaskAgentApi();
-        var secureFile : NodeJS.ReadableStream = await taskAgentApi.downloadSecureFile(
+        let taskAgentApi: ITaskAgentApi = await this.serverConnection.getTaskAgentApi();
+        var secureFile: NodeJS.ReadableStream = await taskAgentApi.downloadSecureFile(
             tl.getVariable("SYSTEM.TEAMPROJECT"),
             secureFileId,
             tl.getSecureFileTicket(secureFileId),
             false);
-        let stream : NodeJS.WritableStream = secureFile.pipe(file);
-        let defer : Q.Deferred<{}> = Q.defer();
+        let stream: NodeJS.WritableStream = secureFile.pipe(file);
+        let defer: Q.Deferred<{}> = Q.defer();
         stream.on("finish", () => {
             defer.resolve();
         });
         await defer.promise;
-        tl.debug("Downloaded secure file contents to: " + tempDownloadPath);
-        return tempDownloadPath;
+        tl.debug("Downloaded secure file contents to: " + this.tempDownloadPath);
+        return this.tempDownloadPath;
     }
 
-    deleteSecureFile(secureFileId: string): void {
-        let tempDownloadPath: string = this.getSecureFileTempDownloadPath(secureFileId);
-        if (tl.exist(tempDownloadPath)) {
-            tl.debug("Deleting secure file at: " + tempDownloadPath);
-            tl.rmRF(tempDownloadPath);
+    deleteSecureFile(): void {
+        if (tl.exist(this.tempDownloadPath)) {
+            tl.debug("Deleting secure file at: " + this.tempDownloadPath);
+            tl.rmRF(this.tempDownloadPath);
         }
     }
 
