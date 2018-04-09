@@ -8,8 +8,9 @@ init:
 install:
   - ps: Install-Product node $env:nodejs_version
   - set PATH=%APPDATA%\npm;%PATH%
-  - npm install -g gulp
-  - npm install
+  - npm i -g gulp
+  - npm i -g tfx-cli
+  - npm i
 
 build: off
 
