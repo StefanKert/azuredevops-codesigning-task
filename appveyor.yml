@@ -1,14 +1,24 @@
-version: 1.0.0.{build}
-configuration: Release
+version: "{build}"
 environment:
-  nodejs_version: "6"
+  nodejs_version: 7
+
+init:
+  - git config --global core.autocrlf input
 
 install:
   - ps: Install-Product node $env:nodejs_version
+  - set PATH=%APPDATA%\npm;%PATH%
   - npm install
+  - set PATH=%APPDATA%\npm;%PATH%
 
-build:
-  - ps: gulp package
+build: off
+
+test-script:
+  - node --version
+  - gulp package
 
 artifacts:
   - path: '**\*.vsix'
+cache:
+  - "%LOCALAPPDATA%\\npm"
+  - node_modules -> package.json          
