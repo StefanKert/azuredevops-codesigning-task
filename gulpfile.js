@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 var debug = require('gulp-debug');
-var gutil = require('gulp-util');
 var ts = require("gulp-typescript");
 var path = require('path');
 var shell = require('shelljs');
@@ -10,7 +9,9 @@ var fs = require('fs');
 var del = require('del');
 var merge = require('merge-stream');
 var cp = require('child_process');
-
+var log = require('fancy-log');
+var PluginError = require('plugin-error');
+ 
 var _buildRoot = path.join(__dirname, '_build');
 var _packagesRoot = path.join(__dirname, '_packages');
 
@@ -21,7 +22,7 @@ function errorHandler(err) {
 gulp.task('default', ['build']);
 
 gulp.task('build', ['clean', 'compile'], function () {
-    var extension = gulp.src(['README.md', 'LICENSE.txt', 'images/**/*', '!images/**/*.pdn', 'vss-extension.json'], { base: '.' })
+    var extension = gulp.src(['README.md', 'LICENSE', 'vss-extension.json'], { base: '.' })
         .pipe(debug({title: 'extension:'}))
         .pipe(gulp.dest(_buildRoot));
     var task = gulp.src(['task/**/*', '!task/**/*.ts'], { base: '.' })
@@ -67,13 +68,13 @@ gulp.task('package', ['build'], function() {
         }
         
         if (!semver.valid(options.version)) {
-            throw new gutil.PluginError('package', 'Invalid semver version: ' + options.version);
+            throw new PluginError('package', 'Invalid semver version: ' + options.version);
         }
     }
     
     switch (options.stage) {
         case 'dev':
-            options.taskId = '0664FF86-F509-4392-A33C-B2D9239B9AE5';
+            options.taskId = '4df4abb0-38d5-11e8-9466-7fef5455a13d';
             options.public = false;
             break;
     }
@@ -82,6 +83,31 @@ gulp.task('package', ['build'], function() {
     updateTaskManifest(options);
     
     shell.exec('tfx extension create --root "' + _buildRoot + '" --output-path "' + _packagesRoot +'"')
+});
+
+gulp.task('upload', ['build'], function() {
+    var args = minimist(process.argv.slice(2), {});
+    var options = {
+        stage: 'dev',
+        public: false,
+        taskId:  '4df4abb0-38d5-11e8-9466-7fef5455a13d'
+    }
+
+    var ref = new Date(2000, 1, 1);
+    var now = new Date();
+    var major = 1
+    var minor = Math.floor((now - ref) / 86400000);
+    var patch = Math.floor(Math.floor(now.getSeconds() + (60 * (now.getMinutes() + (60 * now.getHours())))) * 0.5)
+    options.version = major + '.' + minor + '.' + patch
+      
+    if (!semver.valid(options.version)) {
+        throw new PluginError('package', 'Invalid semver version: ' + options.version);
+    }
+  
+    updateExtensionManifest(options);
+    updateTaskManifest(options);
+    
+    shell.exec('tfx build tasks upload --task-path "' + path.join(_buildRoot, 'task'))
 });
 
 getExternalModules = function() {
@@ -100,7 +126,7 @@ getExternalModules = function() {
     {
         var cmdline = '"' + npmPath + '" install';
         var res = cp.execSync(cmdline);
-        gutil.log(res.toString());
+        log(res.toString());
 
         shell.popd();
     }

@@ -1,14 +1,14 @@
 {
     "manifestVersion": 1,
-    "id": "replacetokens",
-    "name": "Replace Tokens",
-    "version": "2.3.0",
+    "id": "codesigning",
+    "name": "Code Signing",
+    "version": "1.0.0",
     "public": true,
-    "publisher": "qetza",
+    "publisher": "stefankert",
     "targets": [
         { "id": "Microsoft.VisualStudio.Services" }
     ],    
-    "description": "Task to replace tokens in files.",
+    "description": "Task that gives the user the ability to codesign assemblies and applications.",
     "categories": [
         "Build and release"
     ],
@@ -26,15 +26,12 @@
         "support": { "uri": "https://github.com/StefanKert/vsts-codesigning-task/issues" }
     },
     "icons": {
-        "default": "images/extension-icon.png"
+        "default": "task/icon.png"
     },
     "branding": {
-        "color": "#1C3272",
+        "color": "#028c7e",
         "theme": "dark"
     },
-    "screenshots": [
-        { "path": "images/screenshot-01.png" }
-    ],
     "repository": {
         "type": "git",
         "uri": "https://github.com/StefanKert/vsts-codesigning-task"
@@ -44,11 +41,7 @@
         "license": { "path": "LICENSE" }
     },
     "files": [
-        { "path": "task" },
-        {
-            "path": "images",
-            "addressable": true
-        }
+        { "path": "task" }
     ],
     "contributions": [
         {
