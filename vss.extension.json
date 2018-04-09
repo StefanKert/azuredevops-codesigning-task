@@ -1,0 +1,63 @@
+{
+    "manifestVersion": 1,
+    "id": "replacetokens",
+    "name": "Replace Tokens",
+    "version": "2.3.0",
+    "public": true,
+    "publisher": "qetza",
+    "targets": [
+        { "id": "Microsoft.VisualStudio.Services" }
+    ],    
+    "description": "Task to replace tokens in files.",
+    "categories": [
+        "Build and release"
+    ],
+    "tags": [
+        "release",
+        "build",
+        "codesigning",
+        "signing",
+        "signtool",
+        "sign",
+        "cert",
+        "certificate"
+    ],
+    "links": {
+        "support": { "uri": "https://github.com/StefanKert/vsts-codesigning-task/issues" }
+    },
+    "icons": {
+        "default": "images/extension-icon.png"
+    },
+    "branding": {
+        "color": "#1C3272",
+        "theme": "dark"
+    },
+    "screenshots": [
+        { "path": "images/screenshot-01.png" }
+    ],
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/StefanKert/vsts-codesigning-task"
+    },
+    "content": {
+        "details": { "path": "README.md" },
+        "license": { "path": "LICENSE" }
+    },
+    "files": [
+        { "path": "task" },
+        {
+            "path": "images",
+            "addressable": true
+        }
+    ],
+    "contributions": [
+        {
+            "id": "codesigning-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": { "name": "task" }
+        }
+    ]
+}
