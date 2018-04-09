@@ -26,7 +26,7 @@
         "support": { "uri": "https://github.com/StefanKert/vsts-codesigning-task/issues" }
     },
     "icons": {
-        "default": "task/icon.png"
+        "default": "images/extension-icon.png"
     },
     "branding": {
         "color": "#028c7e",
