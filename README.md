@@ -1,5 +1,6 @@
 [![Donate](images/donate.png)](https://www.paypal.me/stefankert/5)
 
+[![Build status](https://ci.appveyor.com/api/projects/status/759afxewfa7yxd33?svg=true)](https://ci.appveyor.com/project/StefanKert/vsts-codesigning-task)
 # Code Signing task
 Build task for VS Team Services that gives the user the ability to codesign assemblies and applications.
 
