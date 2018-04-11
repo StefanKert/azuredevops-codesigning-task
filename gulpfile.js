@@ -11,7 +11,7 @@ var merge = require('merge-stream');
 var cp = require('child_process');
 var log = require('fancy-log');
 var PluginError = require('plugin-error');
- 
+
 var _buildRoot = path.join(__dirname, '_build');
 var _packagesRoot = path.join(__dirname, '_packages');
 
@@ -23,22 +23,22 @@ gulp.task('default', ['build']);
 
 gulp.task('build', ['clean', 'compile'], function () {
     var extension = gulp.src(['README.md', 'LICENSE', 'images/**/*', 'vss-extension.json'], { base: '.' })
-        .pipe(debug({title: 'extension:'}))
+        .pipe(debug({ title: 'extension:' }))
         .pipe(gulp.dest(_buildRoot));
     var task = gulp.src(['task/**/*', '!task/**/*.ts'], { base: '.' })
-        .pipe(debug({title: 'task:'}))
+        .pipe(debug({ title: 'task:' }))
         .pipe(gulp.dest(_buildRoot));
 
     getExternalModules();
-    
+
     return merge(extension, task);
 });
 
-gulp.task('clean', function() {
-   return del([_buildRoot]);
+gulp.task('clean', function () {
+    return del([_buildRoot]);
 });
 
-gulp.task('compile', ['clean'], function() {
+gulp.task('compile', ['clean'], function () {
     var taskPath = path.join(__dirname, 'task', '*.ts');
     var tsConfigPath = path.join(__dirname, 'tsconfig.json');
 
@@ -48,69 +48,60 @@ gulp.task('compile', ['clean'], function() {
         .pipe(gulp.dest(path.join(_buildRoot, 'task')));
 });
 
-gulp.task('package', ['build'], function() {
-    var args = minimist(process.argv.slice(2), {});
-    var options = {
-        version: args.version,
-        stage: args.stage,
-        public: args.public,
-        taskId: args.taskId
-    }
+gulp.task('package', ['build'], function () {
+    var version = getVersion();
 
-    if (options.version) {
-        if (options.version === 'auto') {
-            var ref = new Date(2000, 1, 1);
-            var now = new Date();
-            var major = 1
-            var minor = Math.floor((now - ref) / 86400000);
-            var patch = Math.floor(Math.floor(now.getSeconds() + (60 * (now.getMinutes() + (60 * now.getHours())))) * 0.5)
-            options.version = major + '.' + minor + '.' + patch
-        }
-        
-        if (!semver.valid(options.version)) {
-            throw new PluginError('package', 'Invalid semver version: ' + options.version);
-        }
-    }
-    
-    switch (options.stage) {
-        case 'dev':
-            options.taskId = '4df4abb0-38d5-11e8-9466-7fef5455a13d';
-            options.public = false;
-            break;
-    }
-    
-    updateExtensionManifest(options);
-    updateTaskManifest(options);
-    
-    shell.exec('tfx extension create --root "' + _buildRoot + '" --output-path "' + _packagesRoot +'"')
+    updateExtensionManifest(version);
+    updateTaskManifest(version);
+
+    shell.exec('tfx extension create --root "' + _buildRoot + '" --output-path "' + _packagesRoot + '"')
 });
 
-gulp.task('upload', ['build'], function() {
-    var args = minimist(process.argv.slice(2), {});
-    var options = {
-        stage: 'dev',
-        public: false,
-        taskId:  '4df4abb0-38d5-11e8-9466-7fef5455a13d'
-    }
+gulp.task('upload', ['build'], function () {
+    var version = getVersion();
 
-    var ref = new Date(2000, 1, 1);
-    var now = new Date();
-    var major = 1
-    var minor = Math.floor((now - ref) / 86400000);
-    var patch = Math.floor(Math.floor(now.getSeconds() + (60 * (now.getMinutes() + (60 * now.getHours())))) * 0.5)
-    options.version = major + '.' + minor + '.' + patch
-      
-    if (!semver.valid(options.version)) {
-        throw new PluginError('package', 'Invalid semver version: ' + options.version);
-    }
-  
-    updateExtensionManifest(options);
-    updateTaskManifest(options);
-    
+    updateExtensionManifest(version, true);
+    updateTaskManifest(version);
+
     shell.exec('tfx build tasks upload --task-path "' + path.join(_buildRoot, 'task'))
 });
 
-getExternalModules = function() {
+getVersion = function () {
+    var args = minimist(process.argv.slice(2), {});
+    var branch = args.branch;
+    if (!branch)
+        branch = "notset";
+    var tag = args.tag;
+    var buildnumber = args.buildnumber;
+    if (!buildnumber)
+        buildnumber = "0000"
+    var versionFilePath = path.join(__dirname, 'version.json')
+    var version = JSON.parse(fs.readFileSync(versionFilePath));
+
+    console.log(version);
+
+    if (!tag) {
+        if (branch.startsWith("dev")) {
+            version.prerelease = "beta";
+        }
+        else {
+            version.prerelease = "alpha";
+        }
+        version.buildnumber = buildnumber;
+    }
+    return version;
+}
+
+getVersionAsText = function (version) {
+    if (version.prerelease) {
+        return version.major + '.' + version.minor + '.' + version.patch + '-' + version.prerelease + "." + version.buildnumber;
+    }
+    else {
+        return version.major + '.' + version.minor + '.' + version.patch
+    }
+}
+
+getExternalModules = function () {
     // copy package.json without dev dependencies
     var libPath = path.join(_buildRoot, 'task');
 
@@ -134,49 +125,40 @@ getExternalModules = function() {
     fs.unlinkSync(path.join(libPath, 'package.json'));
 }
 
-updateExtensionManifest = function(options) {
+updateExtensionManifest = function (version) {
     var manifestPath = path.join(_buildRoot, 'vss-extension.json')
     var manifest = JSON.parse(fs.readFileSync(manifestPath));
-    
-    if (options.version) {
-        manifest.version = options.version;
+    manifest.version = version.major + "." + version.minor + "." + version.patch;
+
+    if (version.prerelease) {
+        var versionAsText = getVersionAsText(version);
+        manifest.version = version.major + "." + version.minor + "." + version.patch + "." + version.buildnumber;
+        manifest.id = manifest.id + '-' + (versionAsText.includes("alpha") ? "alpha" : "beta");
+        manifest.name = manifest.name + ' (' + versionAsText + ')';
+        manifest.public = false;
+        manifest.galleryFlags.push("Preview");
     }
-    
-    if (options.stage) {
-        manifest.id = manifest.id + '-' + options.stage
-        manifest.name = manifest.name + ' (' + options.stage + ')'
+    else {
+        manifest.public = true;
     }
 
-    manifest.public = options.public;
-    
     fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 4));
 }
 
-updateTaskManifest = function(options) {
+updateTaskManifest = function (version) {
     var manifestPath = path.join(_buildRoot, 'task', 'task.json')
     var manifest = JSON.parse(fs.readFileSync(manifestPath));
-    
-    if (options.version) {
-        manifest.version.Major = semver.major(options.version);
-        manifest.version.Minor = semver.minor(options.version);
-        manifest.version.Patch = semver.patch(options.version);
-    }
+    var versionAsText = getVersionAsText(version);
 
-    manifest.helpMarkDown = 'v' + manifest.version.Major + '.' + manifest.version.Minor + '.' + manifest.version.Patch + ' - ' + manifest.helpMarkDown;
-    
-    if (options.stage) {
-        manifest.friendlyName = manifest.friendlyName + ' (' + options.stage
+    manifest.version.Major = version.Major;
+    manifest.version.Minor = version.Minor;
+    manifest.version.Patch = version.Patch;
+    manifest.helpMarkDown = 'v' + versionAsText + ' - ' + manifest.helpMarkDown;
 
-        if (options.version) {
-            manifest.friendlyName = manifest.friendlyName + ' ' + options.version
-        }
-
-        manifest.friendlyName = manifest.friendlyName + ')'
+    if (version.prerelease) {
+        manifest.version.Prerelease = version.Patch;
+        manifest.friendlyName = manifest.friendlyName + ' (' + versionAsText + ')';
+        manifest.id = '4df4abb0-38d5-11e8-9466-7fef5455a13d';
     }
-    
-    if (options.taskId) {
-        manifest.id = options.taskId
-    }
-    
     fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 4));
 }

@@ -16,10 +16,21 @@ build: off
 
 test_script:
   - node --version
-  - gulp package
+  - gulp package -tag $(APPVEYOR_REPO_TAG) -buildnumber $(APPVEYOR_BUILD_NUMBER) -branch $(APPVEYOR_REPO_BRANCH)
 
 artifacts:
   - path: '**\*.vsix'
     name: 'VSTS-Package'
 cache:
   - node_modules -> package.json          
+deploy:
+  - provider: GitHub
+    tag: $(APPVEYOR_REPO_TAG_NAME)
+    release: $(APPVEYOR_REPO_TAG_NAME)
+    auth_token:
+      secure: YlLQ7g+X0lFS4+Y+uDKGGhLUicUm2wUmG9NJQqOGEDPP6ZKqp0Z8ZAOPFwKL7TXZ
+    artifact:  '**\*.vsix'
+    prerelease: true
+    force_update: true
+    on:       
+      appveyor_repo_tag: true
