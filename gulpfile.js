@@ -66,6 +66,10 @@ gulp.task('upload', ['build'], function () {
     shell.exec('tfx build tasks upload --task-path "' + path.join(_buildRoot, 'task'))
 });
 
+gulp.task('version', function(){
+    getVersion();
+});
+
 getVersion = function () {
     var branch = process.env.APPVEYOR_REPO_BRANCH;
     var tag = process.env.APPVEYOR_REPO_TAG;
@@ -73,8 +77,16 @@ getVersion = function () {
 
     console.log("Version for build: ",  process.env.APPVEYOR_BUILD_VERSION);
 
-    var versionFilePath = path.join(__dirname, 'version.json')
-    var version = JSON.parse(fs.readFileSync(versionFilePath));
+    var regex = /[0-9]+.[0-9]+.[0-9]+/
+    var versionFilePath = path.join(__dirname, 'appveyor.yml')
+    var fileContent = fs.readFileSync(versionFilePath).toString();
+    var semverVersion = semver.coerce(fileContent.match(regex)[0]);
+    var version = {
+        major: semverVersion.Major,
+        minor: semverVersion.Minor,
+        patch: semverVersion.Patch
+    };
+    console.log(version);
 
     console.log("Tag: ", tag);
     console.log("Branch: ", branch);
