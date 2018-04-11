@@ -81,10 +81,11 @@ getVersion = function () {
     var versionFilePath = path.join(__dirname, 'appveyor.yml')
     var fileContent = fs.readFileSync(versionFilePath).toString();
     var semverVersion = semver.coerce(fileContent.match(regex)[0]);
+    console.log(semverVersion);
     var version = {
-        major: semverVersion.Major,
-        minor: semverVersion.Minor,
-        patch: semverVersion.Patch
+        major: semverVersion.major,
+        minor: semverVersion.minor,
+        patch: semverVersion.patch
     };
     console.log(version);
 
