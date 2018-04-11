@@ -75,10 +75,14 @@ getVersion = function () {
     var buildnumber = args.buildnumber;
     if (!buildnumber)
         buildnumber = "0000"
+
     var versionFilePath = path.join(__dirname, 'version.json')
     var version = JSON.parse(fs.readFileSync(versionFilePath));
 
-    console.log(version);
+    console.log("Tag: ", tag);
+    console.log("Branch: ", branch);
+    console.log("Buildnumber: ", buildnumber);
+    console.log("Version: ", version);
 
     if (!tag) {
         if (branch.startsWith("dev")) {
