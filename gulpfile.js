@@ -66,8 +66,12 @@ gulp.task('upload', ['build'], function () {
     shell.exec('tfx build tasks upload --task-path "' + path.join(_buildRoot, 'task'))
 });
 
-gulp.task('version', function(){
-    getVersion();
+gulp.task('version', function () {
+
+    process.env.APPVEYOR_REPO_BRANCH = 'master';
+    process.env.APPVEYOR_REPO_TAG = true;
+    process.env.APPVEYOR_BUILD_NUMBER = '10';
+    console.log(getVersion());
 });
 
 getVersion = function () {
@@ -75,39 +79,34 @@ getVersion = function () {
     var tag = process.env.APPVEYOR_REPO_TAG;
     var buildnumber = process.env.APPVEYOR_BUILD_NUMBER;
 
-    console.log("Version for build: ",  process.env.APPVEYOR_BUILD_VERSION);
-
     var regex = /[0-9]+.[0-9]+.[0-9]+/
     var versionFilePath = path.join(__dirname, 'appveyor.yml')
     var fileContent = fs.readFileSync(versionFilePath).toString();
     var semverVersion = semver.coerce(fileContent.match(regex)[0]);
-    console.log(semverVersion);
+
     var version = {
         major: semverVersion.major,
         minor: semverVersion.minor,
         patch: semverVersion.patch
     };
-    console.log(version);
-
     console.log("Tag: ", tag);
     console.log("Branch: ", branch);
     console.log("Buildnumber: ", buildnumber);
     console.log("Version: ", version);
 
-    if (!tag) {
-        if (branch.startsWith("master")) {
-            version.prerelease = "rc";
-        }
-        else if (branch.startsWith("dev")) {
-            version.prerelease = "beta";
-        }
-        else {
-            version.prerelease = "alpha";
-        }
-        version.buildnumber = buildnumber;
+    if (tag == 'true')
+        return version;
+
+    if (branch.startsWith("master")) {
+        version.prerelease = "rc";
     }
-    process.env.APPVEYOR_BUILD_VERSION = getVersionAsText(version);
-    console.log("Version for build new: ",  process.env.APPVEYOR_BUILD_VERSION);
+    else if (branch.startsWith("dev")) {
+        version.prerelease = "beta";
+    }
+    else {
+        version.prerelease = "alpha";
+    }
+    version.buildnumber = buildnumber;
     return version;
 }
 
