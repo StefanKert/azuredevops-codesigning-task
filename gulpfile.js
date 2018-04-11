@@ -67,14 +67,11 @@ gulp.task('upload', ['build'], function () {
 });
 
 getVersion = function () {
-    var args = minimist(process.argv.slice(2), {});
-    var branch = args.branch;
-    if (!branch)
-        branch = "notset";
-    var tag = args.tag;
-    var buildnumber = args.buildnumber;
-    if (!buildnumber)
-        buildnumber = "0000"
+    var branch = process.env.APPVEYOR_REPO_BRANCH;
+    var tag = process.env.APPVEYOR_REPO_TAG;
+    var buildnumber = process.env.APPVEYOR_BUILD_NUMBER;
+
+    console.log("Version for build: ",  process.env.APPVEYOR_BUILD_VERSION);
 
     var versionFilePath = path.join(__dirname, 'version.json')
     var version = JSON.parse(fs.readFileSync(versionFilePath));
@@ -93,6 +90,8 @@ getVersion = function () {
         }
         version.buildnumber = buildnumber;
     }
+    process.env.APPVEYOR_BUILD_VERSION = getVersionAsText(version);
+    console.log("Version for build new: ",  process.env.APPVEYOR_BUILD_VERSION);
     return version;
 }
 
