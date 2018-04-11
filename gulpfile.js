@@ -82,7 +82,10 @@ getVersion = function () {
     console.log("Version: ", version);
 
     if (!tag) {
-        if (branch.startsWith("dev")) {
+        if (branch.startsWith("master")) {
+            version.prerelease = "rc";
+        }
+        else if (branch.startsWith("dev")) {
             version.prerelease = "beta";
         }
         else {
