@@ -28,7 +28,7 @@ deploy:
     release: $(APPVEYOR_REPO_TAG_NAME)
     auth_token:
       secure: YlLQ7g+X0lFS4+Y+uDKGGhLUicUm2wUmG9NJQqOGEDPP6ZKqp0Z8ZAOPFwKL7TXZ
-    artifact:  '**\*.vsix'
+    artifact:  .*\.vsix
     prerelease: true
     force_update: true
     on:       
