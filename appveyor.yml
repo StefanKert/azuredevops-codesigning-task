@@ -19,7 +19,7 @@ test_script:
   - gulp package 
 
 artifacts:
-  - path: '**\*.vsix'
+  - path: '_packages\stefankert.codesigning-1.0.0.vsix'
 cache:
   - node_modules -> package.json          
 deploy:
@@ -28,7 +28,7 @@ deploy:
     release: $(APPVEYOR_REPO_TAG_NAME)
     auth_token:
       secure: YlLQ7g+X0lFS4+Y+uDKGGhLUicUm2wUmG9NJQqOGEDPP6ZKqp0Z8ZAOPFwKL7TXZ
-    artifact:  .*\.vsix
+    artifact:  '_packages\stefankert.codesigning-1.0.0.vsix'
     prerelease: true
     force_update: true
     on:       
