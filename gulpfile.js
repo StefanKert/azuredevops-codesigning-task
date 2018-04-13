@@ -57,6 +57,18 @@ gulp.task('package', ['build'], function () {
     shell.exec('tfx extension create --root "' + _buildRoot + '" --output-path "' + _packagesRoot + '"')
 });
 
+gulp.task('package-offline', ['build'], function () {
+    process.env.APPVEYOR_REPO_BRANCH = 'master';
+    process.env.APPVEYOR_REPO_TAG = true;
+    process.env.APPVEYOR_BUILD_NUMBER = '10';
+
+    var version = getVersion();
+    updateExtensionManifest(version);
+    updateTaskManifest(version);
+
+    shell.exec('tfx extension create --root "' + _buildRoot + '" --output-path "' + _packagesRoot + '"')
+});
+
 gulp.task('upload', ['build'], function () {
     var version = getVersion();
 
@@ -168,9 +180,9 @@ updateTaskManifest = function (version) {
     var manifest = JSON.parse(fs.readFileSync(manifestPath));
     var versionAsText = getVersionAsText(version);
 
-    manifest.version.Major = version.Major;
-    manifest.version.Minor = version.Minor;
-    manifest.version.Patch = version.Patch;
+    manifest.version.Major = version.major;
+    manifest.version.Minor = version.minor;
+    manifest.version.Patch = version.patch;
     manifest.helpMarkDown = 'v' + versionAsText + ' - ' + manifest.helpMarkDown;
 
     if (version.prerelease) {
