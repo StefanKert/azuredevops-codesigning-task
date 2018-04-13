@@ -52,6 +52,10 @@
     "files": [
         {
             "path": "task"
+        },
+        {
+            "path": "images",
+            "addressable": true
         }
     ],
     "contributions": [
