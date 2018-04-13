@@ -22,7 +22,7 @@ function errorHandler(err) {
 gulp.task('default', ['build']);
 
 gulp.task('build', ['clean', 'compile'], function () {
-    var extension = gulp.src(['README.md', 'LICENSE', 'images/**/*', 'vss-extension.json'], { base: '.' })
+    var extension = gulp.src(['README.md', 'LICENSE', 'images/**/*.png', 'vss-extension.json'], { base: '.' })
         .pipe(debug({ title: 'extension:' }))
         .pipe(gulp.dest(_buildRoot));
     var task = gulp.src(['task/**/*', '!task/**/*.ts'], { base: '.' })
