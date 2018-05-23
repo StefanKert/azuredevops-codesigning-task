@@ -36,7 +36,7 @@ async function run(): Promise<void> {
           console.log(data);
         }
         console.log("Deleting securfile");
-        console.log("Job FInished: Successfully signed file " + filePath + " with certificate in " + secureFilePath);
+        console.log("Job Finished: Successfully signed file " + filePath + " with certificate in " + secureFilePath);
       });
   } catch (err) {
     console.error(err);
