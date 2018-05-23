@@ -28,11 +28,11 @@ async function run(): Promise<void> {
     exec.execFile(exePath, ["sign", "/fd", hashingAlgorithm, "/t", timeServer, "/f", secureFilePath, "/p", signCertPassword, filePath],
       (err, data) => {
         if (err) {
-          console.error("Singtool failed. Output: ");
+          console.error("Signtool failed. Output: ");
           console.error(err);
           tl.setResult(tl.TaskResult.Failed, err.message);
         } else {
-          console.log("Singtool succeeded. Output: ");
+          console.log("Signtool succeeded. Output: ");
           console.log(data);
         }
         console.log("Deleting securfile");
