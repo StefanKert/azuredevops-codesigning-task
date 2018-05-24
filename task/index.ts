@@ -3,13 +3,12 @@ import tl = require("vsts-task-lib/task");
 import exec = require("child_process");
 import sec = require("./securefiledownloader");
 
-const timeServer: string = "http://timestamp.digicert.com";
-const hashingAlgorithm: string = "SHA256";
-
 async function run(): Promise<void> {
   let secureFileId: string;
   let signCertPassword: string;
   let filePath: string;
+  let timeServer: string;
+  let hashingAlgorithm: string;
   let secureFileHelpers: sec.SecureFileDownloader;
   let secureFilePath: string;
   try {
@@ -17,6 +16,8 @@ async function run(): Promise<void> {
     secureFileId = tl.getInput("secureFileId", true);
     signCertPassword = tl.getInput("signCertPassword", true);
     filePath = tl.getInput("filePath", true);
+    timeServer = tl.getInput("timeServer", true);
+    hashingAlgorithm = tl.getInput("hashingAlgorithm", true);    
 
     console.log("Downloadig secure file " + secureFileId);
     secureFileHelpers = new sec.SecureFileDownloader();
