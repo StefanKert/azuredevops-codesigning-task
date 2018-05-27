@@ -40,6 +40,24 @@
       "required": true,
       "helpMarkDown":
         "Relative path from repo root to the file that should be signed."
+    },
+    {
+      "name": "timeServer",
+      "type": "string",
+      "label": "Timestamp Server Url",
+      "defaultValue": "http://timestamp.digicert.com",
+      "required": true,
+      "helpMarkDown":
+        "Absolute Url of the timestamp server to use."
+    }    ,
+    {
+      "name": "hashingAlgorithm",
+      "type": "string",
+      "label": "Hashing Algorithm",
+      "defaultValue": "SHA256",
+      "required": true,
+      "helpMarkDown":
+        "The file digest algorithm to use for creating file signatures (i.e. SHA256 or SHA1)."
     }
   ],
   "execution": {
