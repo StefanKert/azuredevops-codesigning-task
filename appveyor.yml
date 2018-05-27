@@ -19,7 +19,7 @@ test_script:
   - gulp package 
 
 artifacts:
-  - path: '_packages\stefankert.codesigning-1.0.1.vsix'
+  - path: '_packages\stefankert.codesigning-1.1.0.vsix'
 cache:
   - node_modules -> package.json          
 deploy:
