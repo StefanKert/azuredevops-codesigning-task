@@ -1,4 +1,4 @@
-version: "1.0.1.{build}"
+version: "1.1.0.{build}"
 environment:
   nodejs_version: 7
 
@@ -28,7 +28,7 @@ deploy:
     release: $(APPVEYOR_REPO_TAG_NAME)
     auth_token:
       secure: YlLQ7g+X0lFS4+Y+uDKGGhLUicUm2wUmG9NJQqOGEDPP6ZKqp0Z8ZAOPFwKL7TXZ
-    artifact:  '_packages\stefankert.codesigning-1.0.1.vsix'
+    artifact:  '_packages\stefankert.codesigning-1.1.0.vsix'
     prerelease: true
     force_update: true
     on:       
