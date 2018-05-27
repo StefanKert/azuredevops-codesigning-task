@@ -57,18 +57,6 @@ gulp.task('package', ['build'], function () {
     shell.exec('tfx extension create --root "' + _buildRoot + '" --output-path "' + _packagesRoot + '"')
 });
 
-gulp.task('package-offline', ['build'], function () {
-    process.env.APPVEYOR_REPO_BRANCH = 'master';
-    process.env.APPVEYOR_REPO_TAG = true;
-    process.env.APPVEYOR_BUILD_NUMBER = '10';
-
-    var version = getVersion();
-    updateExtensionManifest(version);
-    updateTaskManifest(version);
-
-    shell.exec('tfx extension create --root "' + _buildRoot + '" --output-path "' + _packagesRoot + '"')
-});
-
 gulp.task('upload', ['build'], function () {
     var version = getVersion();
 
@@ -76,14 +64,6 @@ gulp.task('upload', ['build'], function () {
     updateTaskManifest(version);
 
     shell.exec('tfx build tasks upload --task-path "' + path.join(_buildRoot, 'task'))
-});
-
-gulp.task('version', function () {
-
-    process.env.APPVEYOR_REPO_BRANCH = 'master';
-    process.env.APPVEYOR_REPO_TAG = true;
-    process.env.APPVEYOR_BUILD_NUMBER = '10';
-    console.log(getVersion());
 });
 
 getVersion = function () {
