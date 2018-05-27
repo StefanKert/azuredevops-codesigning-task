@@ -17,7 +17,7 @@ async function run(): Promise<void> {
     signCertPassword = tl.getInput("signCertPassword", true);
     filePath = tl.getInput("filePath", true);
     timeServer = tl.getInput("timeServer", true);
-    hashingAlgorithm = tl.getInput("hashingAlgorithm", true);    
+    hashingAlgorithm = tl.getInput("hashingAlgorithm", true);
 
     console.log("Downloadig secure file " + secureFileId);
     secureFileHelpers = new sec.SecureFileDownloader();
