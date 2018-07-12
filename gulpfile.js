@@ -70,7 +70,7 @@ getVersion = function () {
     var branch = process.env.APPVEYOR_REPO_BRANCH;
     if(!branch)
     {
-        branch = "master"
+        branch = "offline"
     }
     var tag = process.env.APPVEYOR_REPO_TAG;
     if(!tag)
@@ -80,7 +80,8 @@ getVersion = function () {
     var buildnumber = process.env.APPVEYOR_BUILD_NUMBER;
     if(!buildnumber) 
     {
-        buildnumber = 999;
+        var date = new Date();
+        buildnumber = date.getFullYear().toString().slice(-2) + "" + date.getMonth().toString().padStart(2, "0") + "" + date.getDay().toString().padStart(2, "0");
     }
 
     var regex = /[0-9]+.[0-9]+.[0-9]+/
