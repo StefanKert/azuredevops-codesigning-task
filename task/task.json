@@ -2,7 +2,7 @@
   "id": "0e0f3bf7-d96c-45d6-aa76-f9afb71fb77e",
   "name": "codesigning",
   "friendlyName": "Code Signing",
-  "description": "Codesign assemblies and applicationss",
+  "description": "Codesign assemblies and applications",
   "author": "Stefan Kert",
   "helpMarkDown": "[More Information](https://github.com/StefanKert/vsts-codesigning-task#readme)",
   "category": "Utility",

@@ -68,8 +68,20 @@ gulp.task('upload', ['build'], function () {
 
 getVersion = function () {
     var branch = process.env.APPVEYOR_REPO_BRANCH;
+    if(!branch)
+    {
+        branch = "master"
+    }
     var tag = process.env.APPVEYOR_REPO_TAG;
+    if(!tag)
+    {
+        tag = false;
+    }
     var buildnumber = process.env.APPVEYOR_BUILD_NUMBER;
+    if(!buildnumber) 
+    {
+        buildnumber = 999;
+    }
 
     var regex = /[0-9]+.[0-9]+.[0-9]+/
     var versionFilePath = path.join(__dirname, 'appveyor.yml')
