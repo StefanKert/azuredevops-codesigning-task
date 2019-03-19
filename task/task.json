@@ -6,7 +6,10 @@
   "author": "Stefan Kert",
   "helpMarkDown": "[More Information](https://github.com/StefanKert/vsts-codesigning-task#readme)",
   "category": "Utility",
-  "visibility": ["Build", "Release"],
+  "visibility": [
+    "Build",
+    "Release"
+  ],
   "demands": [],
   "version": {
     "Major": "0",
@@ -22,8 +25,7 @@
       "label": "Secure File",
       "defaultValue": "",
       "required": true,
-      "helpMarkDown":
-        "Select the secure file to download to a temporary location on the agent. The file will be cleaned up after the build or release."
+      "helpMarkDown": "Select the secure file to download to a temporary location on the agent. The file will be cleaned up after the build or release."
     },
     {
       "name": "signCertPassword",
@@ -34,12 +36,20 @@
       "helpMarkDown": ""
     },
     {
-      "name": "filePath",
+      "name": "rootFolder",
       "type": "filePath",
-      "label": "File to Sign",
+      "label": "Rootfolder",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "The root folder that the signing pattern(s) will be run from.  Empty is the root of the repo.  Use [variables](https://go.microsoft.com/fwlink/?LinkID=550988) if files are not in the repo. Example: $(agent.builddirectory)"
+    },
+    {
+      "name": "filePaths",
+      "type": "multiLine",
+      "label": "Filepaths",
+      "defaultValue": "**/*.dll",
       "required": true,
-      "helpMarkDown":
-        "Relative path from repo root to the file that should be signed."
+      "helpMarkDown": "File paths to include as part of the signing. Supports multiple lines of match patterns. [More Information](https://go.microsoft.com/fwlink/?LinkID=708389)"
     },
     {
       "name": "timeServer",
@@ -47,17 +57,15 @@
       "label": "Timestamp Server Url",
       "defaultValue": "http://timestamp.digicert.com",
       "required": true,
-      "helpMarkDown":
-        "Absolute Url of the timestamp server to use."
-    }    ,
+      "helpMarkDown": "Absolute Url of the timestamp server to use."
+    },
     {
       "name": "hashingAlgorithm",
       "type": "string",
       "label": "Hashing Algorithm",
       "defaultValue": "SHA256",
       "required": true,
-      "helpMarkDown":
-        "The file digest algorithm to use for creating file signatures (i.e. SHA256 or SHA1)."
+      "helpMarkDown": "The file digest algorithm to use for creating file signatures (i.e. SHA256 or SHA1)."
     }
   ],
   "execution": {
