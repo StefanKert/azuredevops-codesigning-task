@@ -67,50 +67,34 @@ gulp.task('upload', ['build'], function () {
 });
 
 getVersion = function () {
-    var tag = false;
-    var branch = process.env.BUILD_SOURCEBRANCH;
-    if (!branch) {
-        branch = "offline"
-    }
-    if (process.env.BUILD_SOURCEBRANCH) {
-        console.log("Sourcebranch: ", process.env.BUILD_SOURCEBRANCH);
-        console.log("Matches with mater: ", /^(refs\/heads\/master)/g.test(process.env.BUILD_SOURCEBRANCH));
-        console.log("string matches tag: ", /^(refs\/tags\/.*)/g.test(process.env.BUILD_SOURCEBRANCH));
-        tag = /^(refs\/tags\/.*)/g.test(process.env.BUILD_SOURCEBRANCH);
-    }
-
-    var buildnumber = process.env.BUILD_BUILDNUMBER;
-    if (!buildnumber) {
-        var date = new Date();
-        buildnumber = date.getFullYear().toString().slice(-2) + "" + date.getMonth().toString().padStart(2, "0") + "" + date.getDay().toString().padStart(2, "0");
-    }
-
     var packages = require("./package.json");
     var semverVersion = semver.coerce(packages.version);
-
     var version = {
         major: semverVersion.major,
         minor: semverVersion.minor,
         patch: semverVersion.patch
     };
-    console.log("Tag: ", tag);
-    console.log("Branch: ", branch);
-    console.log("Buildnumber: ", buildnumber);
-    console.log("Version: ", version);
-
-    if (tag == 'true')
+    if (/^(refs\/tags\/.*)/g.test(process.env.BUILD_SOURCEBRANCH)){
+        console.log("Version: ", version);
         return version;
-
-    if (/^(refs\/heads\/master)/g.test(branch)) {
+    }
+    else if (/^(refs\/heads\/master)/g.test(process.env.BUILD_SOURCEBRANCH)) {
         version.prerelease = "rc";
     }
-    else if (/^(refs\/heads\/dev)/g.test(branch)) {
+    else if (/^(refs\/heads\/dev)/g.test(process.env.BUILD_SOURCEBRANCH)) {
         version.prerelease = "beta";
     }
     else {
         version.prerelease = "alpha";
     }
+    var buildnumber = process.env.BUILD_BUILDNUMBER;
+    if (!buildnumber) {
+        var date = new Date();
+        buildnumber = date.getFullYear().toString().slice(-2) + "" + date.getMonth().toString().padStart(2, "0") + "" + date.getDay().toString().padStart(2, "0");
+    }
+    console.log("Buildnumber: ", buildnumber);
     version.buildnumber = buildnumber;
+    console.log("Version: ", version);
     return version;
 }
 
