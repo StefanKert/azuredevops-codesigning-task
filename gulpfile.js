@@ -72,7 +72,7 @@ getVersion = function () {
     {
         branch = "offline"
     }
-    var tag = process.env.APPVEYOR_REPO_TAG;
+    var tag = process.env.BUILD_SOURCEBRANCH.match("/^(refs\/tags\/.*)/");
     if(!tag)
     {
         tag = false;
@@ -85,7 +85,6 @@ getVersion = function () {
     }
 
     var packages = require("./package.json");
-    console.log(packages);
     var semverVersion = semver.coerce(packages.version);
 
     var version = {

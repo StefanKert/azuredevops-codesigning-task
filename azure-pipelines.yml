@@ -1,5 +1,9 @@
 trigger:
-- master
+  batch: true
+  branches:
+    include:
+    - master
+    - refs/tags/*
 
 pool:
   vmImage: vs2017-win2016
