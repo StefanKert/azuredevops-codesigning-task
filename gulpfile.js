@@ -68,18 +68,20 @@ gulp.task('upload', ['build'], function () {
 
 getVersion = function () {
     var branch = process.env.BUILD_SOURCEBRANCHNAME;
-    if(!branch)
-    {
+    if (!branch) {
         branch = "offline"
     }
-    var tag = process.env.BUILD_SOURCEBRANCH.match("/^(refs\/tags\/.*)/");
-    if(!tag)
-    {
+    if (process.env.BUILD_SOURCEBRANCH) {
+        var tag = process.env.BUILD_SOURCEBRANCH.match("/^(refs\/tags\/.*)/");
+        if (!tag) {
+            tag = false;
+        }
+    }
+    else {
         tag = false;
     }
     var buildnumber = process.env.BUILD_BUILDNUMBER;
-    if(!buildnumber) 
-    {
+    if (!buildnumber) {
         var date = new Date();
         buildnumber = date.getFullYear().toString().slice(-2) + "" + date.getMonth().toString().padStart(2, "0") + "" + date.getDay().toString().padStart(2, "0");
     }

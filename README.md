@@ -13,3 +13,11 @@ Parameters include:
 - **Secure File**: Select the certificate from your secure file store in VSTS ([Using Secure Files in VSTS](https://docs.microsoft.com/en-us/vsts/build-release/concepts/library/secure-files?view=vsts)) .
 - **Secure File Password**: The certificate password. It is recommended to use a build variable here.
 - **File to Sign**: The .dll or the .exe that contains your code and needs to be signed.
+
+## Supported filetypes
+
+The following filetypes are tested and supported:
+
+- .dll, .exe
+- .appxbundle
+- .appx

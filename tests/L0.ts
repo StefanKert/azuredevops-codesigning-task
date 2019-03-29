@@ -7,11 +7,12 @@ describe("CodeSigning Azure DevOps Extension", function (): void {
     this.timeout(20000);
 
     it("Should call signtool with configured parameters", (done: MochaDone) => {
-        let tp: string = path.join(__dirname, "integration.callwithparams.js");
+        let tp: string = path.join(__dirname, "L0CodeSigningSingleFile.js");
         let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
         tr.run();
 
+        assert.equal(tr.invokedToolCount, 1);
         assert.equal(tr.succeeded, true, "should have succeeded");
         assert.equal(tr.warningIssues.length, 0, "should have no warnings");
         assert.equal(tr.errorIssues.length, 0, "should have no errors");
@@ -20,11 +21,12 @@ describe("CodeSigning Azure DevOps Extension", function (): void {
     });
 
     it("Should call signtool for all files that match pattern", (done: MochaDone) => {
-        let tp: string = path.join(__dirname, "integration.callformatchingfiles.js");
+        let tp: string = path.join(__dirname, "L0CodeSigningMultipleFiles.js");
         let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
         tr.run();
 
+        assert.equal(tr.invokedToolCount, 6);
         assert.equal(tr.succeeded, true, "should have succeeded");
         assert.equal(tr.warningIssues.length, 0, "should have no warnings");
         assert.equal(tr.errorIssues.length, 0, "should have no errors");
@@ -32,15 +34,19 @@ describe("CodeSigning Azure DevOps Extension", function (): void {
         done();
     });
 
-    it("If no files in root folder match given filter task should end with warnings", (done: MochaDone) => {
-        let tp: string = path.join(__dirname, "integration.nofilesmatch.js");
+    it("If no files in root folder match given filter task should fail", (done: MochaDone) => {
+        let tp: string = path.join(__dirname, "L0CodeSigningNoMatchingFileInput.js");
         let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
         tr.run();
 
-        assert.equal(tr.succeeded, true, "should have succeeded");
-        assert.equal(tr.warningIssues.length, 1, "should have no warnings");
-        assert.equal(tr.errorIssues.length, 0, "should have no errors");
+        console.log(tr.stdout);
+        console.log(tr.stderr);
+
+        assert.equal(tr.invokedToolCount, 0);
+        assert.equal(tr.succeeded, false, "should have failed");
+        assert.equal(tr.warningIssues.length, 0, "should have no warnings");
+        assert.equal(tr.errorIssues.length, 1, "should have errors");
 
         done();
     });
@@ -57,8 +63,6 @@ describe("CodeSigning Azure DevOps Extension", function (): void {
                 if (error) {
                     throw error;
                 }
-                console.log(stderr);
-                console.log(stdout);
                 done();
             });
     });
@@ -75,8 +79,6 @@ describe("CodeSigning Azure DevOps Extension", function (): void {
                 if (error) {
                     throw error;
                 }
-                console.log(stderr);
-                console.log(stdout);
                 done();
             });
     });
@@ -93,8 +95,6 @@ describe("CodeSigning Azure DevOps Extension", function (): void {
                 if (error) {
                     throw error;
                 }
-                console.log(stderr);
-                console.log(stdout);
                 done();
             });
     });
@@ -111,8 +111,6 @@ describe("CodeSigning Azure DevOps Extension", function (): void {
                 if (error) {
                     throw error;
                 }
-                console.log(stderr);
-                console.log(stdout);
                 done();
             });
     });

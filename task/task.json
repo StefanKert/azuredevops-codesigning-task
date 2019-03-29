@@ -36,20 +36,12 @@
       "helpMarkDown": ""
     },
     {
-      "name": "rootFolder",
-      "type": "filePath",
-      "label": "Rootfolder",
-      "defaultValue": "",
-      "required": false,
-      "helpMarkDown": "The root folder that the signing pattern(s) will be run from.  Empty is the root of the repo.  Use [variables](https://go.microsoft.com/fwlink/?LinkID=550988) if files are not in the repo. Example: $(agent.builddirectory)"
-    },
-    {
-      "name": "filePaths",
-      "type": "multiLine",
-      "label": "Filepaths",
+      "name": "files",
+      "type": "string",
+      "label": "Files to sign",
       "defaultValue": "**/*.dll",
       "required": true,
-      "helpMarkDown": "File paths to include as part of the signing. Supports multiple lines of match patterns. [More Information](https://go.microsoft.com/fwlink/?LinkID=708389)"
+      "helpMarkDown": "Relative path from the repo root to the files you want to sign. You can use wildcards to specify multiple files ([more information](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/file-matching-patterns?view=azure-devops)). For example, **/bin/*.dll for all .DLL files in the 'bin' subfolder"
     },
     {
       "name": "timeServer",
@@ -68,9 +60,27 @@
       "helpMarkDown": "The file digest algorithm to use for creating file signatures (i.e. SHA256 or SHA1)."
     }
   ],
+  "prejobexecution": {
+    "Node": {
+      "target": "precodesigning.js",
+      "argumentFormat": ""
+    }
+  },
   "execution": {
     "Node": {
-      "target": "index.js"
+      "target": "codesigning.js"
     }
+  },
+  "postjobexecution": {
+    "Node": {
+      "target": "postcodesigning.js",
+      "argumentFormat": ""
+    }
+  },
+  "messages": {
+    "AndroidHomeNotSet": "The ANDROID_HOME environment variable is not set for the running user.",
+    "CouldNotFindToolInAndroidHome": "Could not find tool: %s inside ANDROID_HOME: %s",
+    "NoMatchingFiles": "No matching files were found with search pattern: %s",
+    "DeleteSecureFileFailed": "Failed to delete secure file downloaded from the server: %s"
   }
 }
