@@ -2,7 +2,6 @@ import * as path from "path";
 import * as assert from "assert";
 import * as ttm from "azure-pipelines-task-lib/mock-test";
 import * as exec from "child_process";
-import * as signcheck from "sign-check";
 
 describe("CodeSigning Azure DevOps Extension", function (): void {
     this.timeout(20000);
@@ -46,7 +45,7 @@ describe("CodeSigning Azure DevOps Extension", function (): void {
         done();
     });
 
-    it("Should succeed signing MSIX", (done: MochaDone) => {
+    it("Should succeed signing AppBundles", (done: MochaDone) => {
         const signTool: string = path.join(__dirname, "../task/signtool.exe");
         const msixFile: string = path.join(__dirname, "test-files", "appbundle", "App.appxbundle");
         const certFile: string = path.join(__dirname, "test-files", "AppCertificate.pfx");
@@ -62,6 +61,59 @@ describe("CodeSigning Azure DevOps Extension", function (): void {
                 console.log(stdout);
                 done();
             });
+    });
 
+    it("Should succeed signing AppPackage", (done: MochaDone) => {
+        const signTool: string = path.join(__dirname, "../task/signtool.exe");
+        const msixFile: string = path.join(__dirname, "test-files", "apppackage", "App.appx");
+        const certFile: string = path.join(__dirname, "test-files", "AppCertificate.pfx");
+        const signCertPassword: string = "";
+
+        exec.execFile(signTool,
+            ["sign", "/fd", "SHA256", "/t", "http://timestamp.digicert.com", "/f", certFile, "/p", signCertPassword, msixFile],
+            (error, stdout, stderr) => {
+                if (error) {
+                    throw error;
+                }
+                console.log(stderr);
+                console.log(stdout);
+                done();
+            });
+    });
+
+    it("Should succeed signing Exe", (done: MochaDone) => {
+        const signTool: string = path.join(__dirname, "../task/signtool.exe");
+        const msixFile: string = path.join(__dirname, "test-files", "exe", "App.exe");
+        const certFile: string = path.join(__dirname, "test-files", "AppCertificate.pfx");
+        const signCertPassword: string = "";
+
+        exec.execFile(signTool,
+            ["sign", "/fd", "SHA256", "/t", "http://timestamp.digicert.com", "/f", certFile, "/p", signCertPassword, msixFile],
+            (error, stdout, stderr) => {
+                if (error) {
+                    throw error;
+                }
+                console.log(stderr);
+                console.log(stdout);
+                done();
+            });
+    });
+
+    it("Should succeed signing DLL", (done: MochaDone) => {
+        const signTool: string = path.join(__dirname, "../task/signtool.exe");
+        const msixFile: string = path.join(__dirname, "test-files", "dll", "App.dll");
+        const certFile: string = path.join(__dirname, "test-files", "AppCertificate.pfx");
+        const signCertPassword: string = "";
+
+        exec.execFile(signTool,
+            ["sign", "/fd", "SHA256", "/t", "http://timestamp.digicert.com", "/f", certFile, "/p", signCertPassword, msixFile],
+            (error, stdout, stderr) => {
+                if (error) {
+                    throw error;
+                }
+                console.log(stderr);
+                console.log(stdout);
+                done();
+            });
     });
 });
