@@ -67,19 +67,18 @@ gulp.task('upload', ['build'], function () {
 });
 
 getVersion = function () {
+    var tag = false;
     var branch = process.env.BUILD_SOURCEBRANCHNAME;
     if (!branch) {
         branch = "offline"
     }
     if (process.env.BUILD_SOURCEBRANCH) {
-        var tag = process.env.BUILD_SOURCEBRANCH.match("/^(refs\/tags\/.*)/");
-        if (!tag) {
-            tag = false;
-        }
+        console.log("Sourcebranch: ", process.env.BUILD_SOURCEBRANCH);
+        console.log("Matches with mater: ", process.env.BUILD_SOURCEBRANCH.match("/^(refs\/heads\/master\/.*)/"));
+
+        tag = process.env.BUILD_SOURCEBRANCH.match("/^(refs\/tags\/.*)/");
     }
-    else {
-        tag = false;
-    }
+
     var buildnumber = process.env.BUILD_BUILDNUMBER;
     if (!buildnumber) {
         var date = new Date();
