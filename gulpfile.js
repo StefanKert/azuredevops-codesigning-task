@@ -68,7 +68,7 @@ gulp.task('upload', ['build'], function () {
 
 getVersion = function () {
     var tag = false;
-    var branch = process.env.BUILD_SOURCEBRANCHNAME;
+    var branch = process.env.BUILD_SOURCEBRANCH;
     if (!branch) {
         branch = "offline"
     }
@@ -101,10 +101,10 @@ getVersion = function () {
     if (tag == 'true')
         return version;
 
-    if (branch.startsWith("master")) {
+    if (/^(refs\/heads\/master)/g.test(branch)) {
         version.prerelease = "rc";
     }
-    else if (branch.startsWith("dev")) {
+    else if (/^(refs\/heads\/dev)/g.test(branch)) {
         version.prerelease = "beta";
     }
     else {
