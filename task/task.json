@@ -25,7 +25,7 @@
       "label": "Secure File",
       "defaultValue": "",
       "required": true,
-      "helpMarkDown": "Select the secure file to download to a temporary location on the agent. The file will be cleaned up after the build or release."
+      "helpMarkDown": "Select the certificate that was uploaded to `Secure Files` to be used to sign the given files."
     },
     {
       "name": "signCertPassword",
@@ -33,15 +33,15 @@
       "label": "Secure File Password",
       "defaultValue": "",
       "required": true,
-      "helpMarkDown": ""
+      "helpMarkDown": "Enter the password for the provided certificate. Use a new variable with its lock enabled on the Variables tab to encrypt this value."
     },
     {
       "name": "files",
-      "type": "string",
-      "label": "Files to sign",
+      "type": "filePath",
+      "label": "File(s) to sign",
       "defaultValue": "**/*.dll",
       "required": true,
-      "helpMarkDown": "Relative path from the repo root to the files you want to sign. You can use wildcards to specify multiple files ([more information](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/file-matching-patterns?view=azure-devops)). For example, **/bin/*.dll for all .DLL files in the 'bin' subfolder"
+      "helpMarkDown": "Relative path from the repo root to the file(s) you want to sign. You can use wildcards to specify multiple files ([more information](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/file-matching-patterns?view=azure-devops)). For example, **/bin/*.dll for all .DLL files in the 'bin' subfolder"
     },
     {
       "name": "timeServer",
@@ -78,8 +78,6 @@
     }
   },
   "messages": {
-    "AndroidHomeNotSet": "The ANDROID_HOME environment variable is not set for the running user.",
-    "CouldNotFindToolInAndroidHome": "Could not find tool: %s inside ANDROID_HOME: %s",
     "NoMatchingFiles": "No matching files were found with search pattern: %s",
     "DeleteSecureFileFailed": "Failed to delete secure file downloaded from the server: %s"
   }
