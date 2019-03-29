@@ -4,5 +4,9 @@
       "module": "commonjs",
       "sourceMap": true,
       "moduleResolution": "node"
-  }
+  },
+  "include": [
+      "task/*.ts",
+      "tests/*.ts"
+  ]
 }
