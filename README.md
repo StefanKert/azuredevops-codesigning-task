@@ -27,3 +27,16 @@ The following filetypes are tested and supported:
 - .dll, .exe
 - .appxbundle
 - .appx
+
+## Release Notes
+
+- 1.0
+  - Initial Release for Code Signing VSTS-Task.
+- 1.1.0
+  - Updated SignTool to use the latest version (10.0.17134.12) #3
+  - Added fields for timestamp server & hashing algorithm #1 #2 (big thanks to @jbattermann)
+  - Minor typo fixes
+- 2.0.0
+  - *Breaking Change*: Introduced wildcard support. To upgrade from 1.x you have to select the new version and use the filepath to sign files. For further information on how wildcards are supported check [this article](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/file-matching-patterns?view=azure-devops) (Fixes #5)
+  - Updated SignTool to use the latest version (10.0.17763.132). With this new version the extensions *.appx* and *.appxbundle* are now officially supported. See #8 and #9 for details (big thanks to @qmatteoq for updating the signtool and bringing this up)
+  - The new version should work with release tasks as well (#4)
