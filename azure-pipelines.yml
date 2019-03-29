@@ -16,6 +16,32 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm install
-    npm run build
+    npm i -g gulp
+    npm i -g tfx-cli
+    npm i
+  displayName: 'npm install prerequisites'
+
+- script: npm run test
+  displayName: 'Run Tests'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testRunner: JUnit
+    testResultsFiles: '**/TEST-RESULTS.xml'
+
+- script: |   
+    gulp package
   displayName: 'npm install and build'
+
+- task: CopyFiles@1
+  displayName: Copy Files to - $(build.artifactstagingdirectory)
+  inputs:
+    SourceFolder: '$(build.sourcesdirectory)'
+    Contents: |
+      **\*.vsix
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
