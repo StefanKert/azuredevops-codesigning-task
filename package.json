@@ -1,13 +1,13 @@
 {
-  "name": "stefankert.vsts-codesigning-task",
+  "name": "stefankert.azuredevops-codesigning-task",
   "version": "2.0.0",
   "description": "Build task for VS Team Services that gives the user the ability to codesign assemblies and applications.",
   "author": "Stefan Kert",
   "license": "MIT",
-  "homepage": "https://github.com/StefanKert/vsts-codesigning-task#readme",
-  "repository": "https://github.com/StefanKert/vsts-codesigning-task",
+  "homepage": "https://github.com/StefanKert/azuredevops-codesigning-task#readme",
+  "repository": "https://github.com/StefanKert/azuredevops-codesigning-task",
   "bugs": {
-    "url": "https://github.com/StefanKert/vsts-codesigning-task/issues"
+    "url": "https://github.com/StefanKert/azuredevops-codesigning-task/issues"
   },
   "keywords": [
     "VSTS",

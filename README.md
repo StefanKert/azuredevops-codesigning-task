@@ -1,6 +1,6 @@
 [![Donate](images/donate.png)](https://www.paypal.me/stefankert/5)
 
-[![Build Status](https://dev.azure.com/stefankert/Public/_apis/build/status/StefanKert.vsts-codesigning-task?branchName=master)](https://dev.azure.com/stefankert/Public/_build/latest?definitionId=7&branchName=master)
+[![Build Status](https://dev.azure.com/stefankert/Public/_apis/build/status/StefanKert.azuredevops-codesigning-task?branchName=master)](https://dev.azure.com/stefankert/Public/_build/latest?definitionId=7&branchName=master)
 
 # Code Signing task
 

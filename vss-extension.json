@@ -27,7 +27,7 @@
     ],
     "links": {
         "support": {
-            "uri": "https://github.com/StefanKert/vsts-codesigning-task/issues"
+            "uri": "https://github.com/StefanKert/azuredevops-codesigning-task/issues"
         }
     },
     "icons": {
@@ -39,7 +39,7 @@
     },
     "repository": {
         "type": "git",
-        "uri": "https://github.com/StefanKert/vsts-codesigning-task"
+        "uri": "https://github.com/StefanKert/azuredevops-codesigning-task"
     },
     "content": {
         "details": {

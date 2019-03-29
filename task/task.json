@@ -4,7 +4,7 @@
   "friendlyName": "Code Signing",
   "description": "Codesign assemblies and applications",
   "author": "Stefan Kert",
-  "helpMarkDown": "[More Information](https://github.com/StefanKert/vsts-codesigning-task#readme)",
+  "helpMarkDown": "[More Information](https://github.com/StefanKert/azuredevops-codesigning-task#readme)",
   "category": "Utility",
   "visibility": [
     "Build",
