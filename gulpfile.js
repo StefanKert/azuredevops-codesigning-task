@@ -74,9 +74,9 @@ getVersion = function () {
     }
     if (process.env.BUILD_SOURCEBRANCH) {
         console.log("Sourcebranch: ", process.env.BUILD_SOURCEBRANCH);
-        console.log("Matches with mater: ", process.env.BUILD_SOURCEBRANCH.match("/^(refs\/heads\/master)/"));
-        console.log("string matches tag: ", "refs/tags/v2.0.0".match("/^(refs\/tags\/.*)/"));
-        tag = process.env.BUILD_SOURCEBRANCH.match("/^(refs\/tags\/.*)/");
+        console.log("Matches with mater: ", /^(refs\/heads\/master)/g.test(process.env.BUILD_SOURCEBRANCH));
+        console.log("string matches tag: ", /^(refs\/tags\/.*)/g.test(process.env.BUILD_SOURCEBRANCH));
+        tag = /^(refs\/tags\/.*)/g.test(process.env.BUILD_SOURCEBRANCH);
     }
 
     var buildnumber = process.env.BUILD_BUILDNUMBER;
