@@ -67,7 +67,7 @@ gulp.task('upload', ['build'], function () {
 });
 
 getVersion = function () {
-    var branch = process.env.APPVEYOR_REPO_BRANCH;
+    var branch = process.env.BUILD_SOURCEBRANCHNAME;
     if(!branch)
     {
         branch = "offline"
@@ -77,17 +77,16 @@ getVersion = function () {
     {
         tag = false;
     }
-    var buildnumber = process.env.APPVEYOR_BUILD_NUMBER;
+    var buildnumber = process.env.BUILD_BUILDNUMBER;
     if(!buildnumber) 
     {
         var date = new Date();
         buildnumber = date.getFullYear().toString().slice(-2) + "" + date.getMonth().toString().padStart(2, "0") + "" + date.getDay().toString().padStart(2, "0");
     }
 
-    var regex = /[0-9]+.[0-9]+.[0-9]+/
-    var versionFilePath = path.join(__dirname, 'appveyor.yml')
-    var fileContent = fs.readFileSync(versionFilePath).toString();
-    var semverVersion = semver.coerce(fileContent.match(regex)[0]);
+    var packages = require("./package.json");
+    console.log(packages);
+    var semverVersion = semver.coerce(packages.version);
 
     var version = {
         major: semverVersion.major,
