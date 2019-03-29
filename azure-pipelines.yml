@@ -23,6 +23,9 @@ steps:
     npm i
   displayName: 'npm install prerequisites'
 
+- script: gulp package
+  displayName: 'npm install and build'
+
 - script: npm run test
   displayName: 'Run Tests'
 
@@ -32,9 +35,6 @@ steps:
     testRunner: JUnit
     testResultsFiles: '**/TEST-RESULTS.xml'
 
-- script: |   
-    gulp package
-  displayName: 'npm install and build'
 
 - task: CopyFiles@1
   displayName: Copy Files to - $(build.artifactstagingdirectory)
