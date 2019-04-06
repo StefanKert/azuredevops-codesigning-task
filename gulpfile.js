@@ -54,7 +54,7 @@ gulp.task('package', ['build'], function () {
     updateExtensionManifest(version);
     updateTaskManifest(version);
 
-    shell.exec('tfx extension create --root "' + _buildRoot + '" --output-path "' + _packagesRoot + '"')
+    shell.exec('./node_modules/.bin/tfx extension create --root "' + _buildRoot + '" --output-path "' + _packagesRoot + '"')
 });
 
 gulp.task('upload', ['build'], function () {
