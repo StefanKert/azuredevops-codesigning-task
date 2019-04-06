@@ -10,14 +10,10 @@ pool:
 
 steps:
 - powershell: |
-    npm install -g tfx-cli
-    npm install -g typescript
-    npm install -g mocha
-    npm install -g gulp
     npm install
   displayName: 'npm install prerequisites'
 
-- powershell: gulp package
+- powershell: ./node_modules/.bin/gulp package
   displayName: 'npm install and build'
 
 - powershell: npm run test
