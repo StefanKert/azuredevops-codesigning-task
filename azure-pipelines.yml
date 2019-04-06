@@ -9,16 +9,11 @@ pool:
   vmImage: windows-2019
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '8.x'
-  displayName: 'Install Node.js'
-
 - powershell: |
-    npm install -g gulp
     npm install -g tfx-cli
     npm install -g typescript
     npm install -g mocha
+    npm install -g gulp
     npm install
   displayName: 'npm install prerequisites'
 
