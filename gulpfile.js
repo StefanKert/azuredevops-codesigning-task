@@ -63,7 +63,7 @@ gulp.task('upload', ['build'], function () {
     updateExtensionManifest(version, true);
     updateTaskManifest(version);
 
-    shell.exec('tfx build tasks upload --task-path "' + path.join(_buildRoot, 'task'))
+    shell.exec('./node_modules/.bin/tfx build tasks upload --task-path "' + path.join(_buildRoot, 'task'))
 });
 
 getVersion = function () {
