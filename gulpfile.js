@@ -16,6 +16,7 @@ var _buildRoot = path.join(__dirname, '_build');
 var _packagesRoot = path.join(__dirname, '_packages');
 
 function errorHandler(err) {
+    console.error(err);
     process.exit(1);
 }
 
@@ -54,7 +55,8 @@ gulp.task('package', ['build'], function () {
     updateExtensionManifest(version);
     updateTaskManifest(version);
 
-    shell.exec('./node_modules/.bin/tfx extension create --root "' + _buildRoot + '" --output-path "' + _packagesRoot + '"')
+    shell.cd("node_modules/.bin");
+    shell.exec('tfx extension create --root "' + _buildRoot + '" --output-path "' + _packagesRoot + '"')
 });
 
 gulp.task('upload', ['build'], function () {
