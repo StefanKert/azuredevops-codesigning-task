@@ -27,6 +27,8 @@ The following filetypes are tested and supported:
 - .dll, .exe
 - .appxbundle
 - .appx
+- .msi
+- .msixbundle
 
 ## Release Notes
 

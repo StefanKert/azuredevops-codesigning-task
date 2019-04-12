@@ -112,6 +112,22 @@ describe("CodeSigning Azure DevOps Extension", function (): void {
             });
     });
 
+    it("Should succeed signing MSI", (done: MochaDone) => {
+        const signTool: string = path.join(__dirname, "../task/signtool.exe");
+        const msixFile: string = path.join(__dirname, "test-files", "msi", "App.msi");
+        const certFile: string = path.join(__dirname, "test-files", "AppCertificate.pfx");
+        const signCertPassword: string = "";
+
+        exec.execFile(signTool,
+            ["sign", "/fd", "SHA256", "/t", "http://timestamp.digicert.com", "/f", certFile, "/p", signCertPassword, msixFile],
+            (error, stdout, stderr) => {
+                if (error) {
+                    throw error;
+                }
+                done();
+            });
+    });
+
     it("Should succeed signing Exe", (done: MochaDone) => {
         const signTool: string = path.join(__dirname, "../task/signtool.exe");
         const msixFile: string = path.join(__dirname, "test-files", "exe", "App.exe");
