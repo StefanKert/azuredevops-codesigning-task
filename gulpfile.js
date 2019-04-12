@@ -119,18 +119,12 @@ getExternalModules = function () {
 
         fs.writeFileSync(path.join(libPath, 'package.json'), JSON.stringify(pkg, null, 4));
 
-        // install modules
-        var npmPath = shell.which('npm');
-
-        console.log("Found npm: " + npmPath);
-
-        shell.pushd(libPath);
-        {
-            var cmdline = '"' + npmPath + '" install';
-            var res = cp.execSync(cmdline);
-            log(res.toString());
-
-            shell.popd();
+        if (shell.exec('npm install').code !== 0) {
+            shell.echo('Error: npm install failed');
+            shell.exit(1);
+        }
+        else {
+            console.log("Successfully installed npm packages");
         }
 
         fs.unlinkSync(path.join(libPath, 'package.json'));
