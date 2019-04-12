@@ -38,11 +38,11 @@
     "vso-node-api": "^6.5.0"
   },
   "scripts": {
-    "build": "./node_modules/.bin/tsc -p .",
+    "build": "tsc -p .",
     "postbuild": "npm run package",
-    "package": "./node_modules/.bin/tfx extension create --rev-version",
-    "testlocal": "./node_modules/.bin/tsc -p . && ./node_modules/.bin/mocha ./tests/L0.js",
-    "test": "./node_modules/.bin/tsc -p . && ./node_modules/.bin/mocha ./tests/L0.js --reporter mocha-junit-reporter"
+    "package": ".tfx extension create --rev-version",
+    "testlocal": "tsc -p . && mocha ./tests/L0.js",
+    "test": "tsc && mocha ./tests/L0.js --reporter mocha-junit-reporter"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.6",
