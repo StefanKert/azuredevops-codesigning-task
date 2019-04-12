@@ -76,7 +76,7 @@ getVersion = function () {
         minor: semverVersion.minor,
         patch: semverVersion.patch
     };
-    if (/^(refs\/tags\/.*)/g.test(process.env.BUILD_SOURCEBRANCH)){
+    if (/^(refs\/tags\/.*)/g.test(process.env.BUILD_SOURCEBRANCH)) {
         console.log("Version: ", version);
         return version;
     }
@@ -110,27 +110,34 @@ getVersionAsText = function (version) {
 }
 
 getExternalModules = function () {
-    // copy package.json without dev dependencies
-    var libPath = path.join(_buildRoot, 'task');
+    try {
+        // copy package.json without dev dependencies
+        var libPath = path.join(_buildRoot, 'task');
 
-    var pkg = require('./package.json');
-    delete pkg.devDependencies;
+        var pkg = require('./package.json');
+        delete pkg.devDependencies;
 
-    fs.writeFileSync(path.join(libPath, 'package.json'), JSON.stringify(pkg, null, 4));
+        fs.writeFileSync(path.join(libPath, 'package.json'), JSON.stringify(pkg, null, 4));
 
-    // install modules
-    var npmPath = shell.which('npm');
+        // install modules
+        var npmPath = shell.which('npm');
 
-    shell.pushd(libPath);
-    {
-        var cmdline = '"' + npmPath + '" install';
-        var res = cp.execSync(cmdline);
-        log(res.toString());
+        console.log("Found npm: " + npmPath);
 
-        shell.popd();
+        shell.pushd(libPath);
+        {
+            var cmdline = '"' + npmPath + '" install';
+            var res = cp.execSync(cmdline);
+            log(res.toString());
+
+            shell.popd();
+        }
+
+        fs.unlinkSync(path.join(libPath, 'package.json'));
+    } catch (e) {
+        console.error(e);
+        throw e;
     }
-
-    fs.unlinkSync(path.join(libPath, 'package.json'));
 }
 
 updateExtensionManifest = function (version) {
