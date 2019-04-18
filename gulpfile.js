@@ -121,7 +121,7 @@ getExternalModules = function () {
         fs.writeFileSync(path.join(libPath, 'package.json'), JSON.stringify(pkg, null, 4));
 
         shell.cd(libPath);
-        if (shell.exec('npm install').code !== 0) {
+        if (shell.exec('npm install --loglevel=error').code !== 0) {
             shell.echo('Error: npm install failed');
             shell.exit(1);
         }

@@ -10,7 +10,7 @@ pool:
 
 steps:
 - powershell: |
-    npm install
+    npm install --loglevel=error
   displayName: 'npm install prerequisites'
 
 - powershell: ./node_modules/.bin/gulp package
