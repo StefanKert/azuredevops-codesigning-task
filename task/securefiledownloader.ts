@@ -1,18 +1,18 @@
 import fs = require("fs");
 import Q = require("q");
 import tl = require("azure-pipelines-task-lib/task");
-import * as vsts from "vso-node-api/WebApi";
-import { IRequestHandler } from "typed-rest-client/Interfaces";
-import { ITaskAgentApi } from "vso-node-api/TaskAgentApi";
+import * as azuredevops from "azure-devops-node-api/WebApi";
+import { ITaskAgentApi } from "azure-devops-node-api/TaskAgentApi";
+import { IRequestHandler } from "azure-devops-node-api/interfaces/common/VsoBaseInterfaces";
 
 export class SecureFileDownloader {
-    serverConnection: vsts.WebApi;
+    serverConnection: azuredevops.WebApi;
 
     constructor() {
         let serverUrl: string = tl.getVariable("System.TeamFoundationCollectionUri");
         let serverCreds: string = tl.getEndpointAuthorizationParameter("SYSTEMVSSCONNECTION", "ACCESSTOKEN", false);
-        let authHandler: IRequestHandler = vsts.getPersonalAccessTokenHandler(serverCreds);
-        this.serverConnection = new vsts.WebApi(serverUrl, authHandler);
+        let authHandler: IRequestHandler = azuredevops.getPersonalAccessTokenHandler(serverCreds);
+        this.serverConnection = new azuredevops.WebApi(serverUrl, authHandler);
     }
 
     async downloadSecureFile(secureFileId: string): Promise<string> {
