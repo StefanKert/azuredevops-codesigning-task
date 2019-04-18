@@ -40,7 +40,7 @@
   "scripts": {
     "build": "tsc -p .",
     "postbuild": "npm run package",
-    "package": ".tfx extension create --rev-version",
+    "package": "tfx extension create --rev-version",
     "testlocal": "tsc -p . && mocha ./tests/L0.js",
     "test": "tsc && mocha ./tests/L0.js --reporter mocha-junit-reporter"
   },

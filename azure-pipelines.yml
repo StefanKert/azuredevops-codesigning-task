@@ -31,6 +31,7 @@ steps:
     SourceFolder: '$(build.sourcesdirectory)'
     Contents: |
       **\*.vsix
+      _build\**
     TargetFolder: '$(build.artifactstagingdirectory)'
 
 - task: PublishBuildArtifacts@1
