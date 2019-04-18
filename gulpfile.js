@@ -1,3 +1,5 @@
+const { task, series } = require('gulp');
+
 var gulp = require('gulp');
 var debug = require('gulp-debug');
 var ts = require("gulp-typescript");
@@ -20,9 +22,7 @@ function errorHandler(err) {
     process.exit(1);
 }
 
-gulp.task('default', ['build']);
-
-gulp.task('build', ['clean', 'compile'], function () {
+function build() {
     var extension = gulp.src(['README.md', 'LICENSE', 'images/**/*.png', 'vss-extension.json'], { base: '.' })
         .pipe(debug({ title: 'extension:' }))
         .pipe(gulp.dest(_buildRoot));
@@ -33,13 +33,13 @@ gulp.task('build', ['clean', 'compile'], function () {
     getExternalModules();
 
     return merge(extension, task);
-});
+}
 
-gulp.task('clean', function () {
+function clean() {
     return del([_buildRoot]);
-});
+}
 
-gulp.task('compile', ['clean'], function () {
+function compile() {
     var taskPath = path.join(__dirname, 'task', '*.ts');
     var tsConfigPath = path.join(__dirname, 'tsconfig.json');
 
@@ -47,9 +47,9 @@ gulp.task('compile', ['clean'], function () {
         .pipe(ts.createProject(tsConfigPath)())
         .on('error', errorHandler)
         .pipe(gulp.dest(path.join(_buildRoot, 'task')));
-});
+}
 
-gulp.task('package', ['build'], function () {
+function package() {
     var version = getVersion();
 
     updateExtensionManifest(version);
@@ -57,9 +57,9 @@ gulp.task('package', ['build'], function () {
 
     shell.cd("node_modules/.bin");
     shell.exec('tfx extension create --root "' + _buildRoot + '" --output-path "' + _packagesRoot + '"')
-});
+}
 
-gulp.task('upload', ['build'], function () {
+function upload() {
     var version = getVersion();
 
     updateExtensionManifest(version, true);
@@ -67,7 +67,7 @@ gulp.task('upload', ['build'], function () {
 
     shell.cd("node_modules/.bin");
     shell.exec('tfx build tasks upload --task-path "' + path.join(_buildRoot, 'task'))
-});
+}
 
 getVersion = function () {
     var packages = require("./package.json");
@@ -173,3 +173,8 @@ updateTaskManifest = function (version) {
     }
     fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 4));
 }
+
+exports.build = series(clean, compile, build);
+exports.upload = series(clean, compile, build, upload);
+exports.package = series(clean, compile, build, package);
+exports.default = series(clean, compile, build);
