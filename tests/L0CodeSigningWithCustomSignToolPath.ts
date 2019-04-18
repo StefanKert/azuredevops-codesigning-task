@@ -11,7 +11,7 @@ const timeServer: string = "http://timestamp.digicert.com";
 const hashingAlgorithm: string = "SHA256";
 const fileToSign: string = "DllToSign.dll";
 
-const signToolPath: string = "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\x64\\signtool.exe";
+const signToolPath: string = path.join(__dirname, "./test-files", "signtool.exe");
 const certificatePath: string = path.join(__dirname, "./test-files", "TestCertificate.pfx");
 const filePaths: string = "DllToSign.dll";
 tmr.setInput("secureFileId", secureFileId);
