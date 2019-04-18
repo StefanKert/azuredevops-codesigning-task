@@ -5,14 +5,10 @@ var debug = require('gulp-debug');
 var ts = require("gulp-typescript");
 var path = require('path');
 var shell = require('shelljs');
-var minimist = require('minimist');
 var semver = require('semver');
 var fs = require('fs');
 var del = require('del');
 var merge = require('merge-stream');
-var cp = require('child_process');
-var log = require('fancy-log');
-var PluginError = require('plugin-error');
 
 var _buildRoot = path.join(__dirname, '_build');
 var _packagesRoot = path.join(__dirname, '_packages');
@@ -49,14 +45,15 @@ function compile() {
         .pipe(gulp.dest(path.join(_buildRoot, 'task')));
 }
 
-function package() {
+function package(done) {
     var version = getVersion();
 
     updateExtensionManifest(version);
     updateTaskManifest(version);
 
     shell.cd("node_modules/.bin");
-    shell.exec('tfx extension create --root "' + _buildRoot + '" --output-path "' + _packagesRoot + '"')
+    shell.exec('tfx extension create --root "' + _buildRoot + '" --output-path "' + _packagesRoot + '"');
+    done();
 }
 
 function upload() {
@@ -174,7 +171,13 @@ updateTaskManifest = function (version) {
     fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 4));
 }
 
-exports.build = series(clean, compile, build);
-exports.upload = series(clean, compile, build, upload);
-exports.package = series(clean, compile, build, package);
-exports.default = series(clean, compile, build);
+exports.build = (done) => {
+    series(clean, compile, build)(done);
+};
+
+exports.upload = (done) => {
+    series(clean, compile, build, upload)(done);
+};
+exports.package = (done) => {
+    series(clean, compile, build, package)(done);
+};
