@@ -1,10 +1,10 @@
 import path = require("path");
 import tl = require("azure-pipelines-task-lib/task");
 import { ToolRunner } from "azure-pipelines-task-lib/toolrunner";
+import fs = require("fs");
 
-async function sign(filePath: string, hashingAlgorithm: string, timeServer: string, signCertPassword: string): Promise<number> {
-  const exePath: string = path.resolve(__dirname, "./signtool.exe");
-  const signToolRunner: ToolRunner = tl.tool(exePath);
+async function sign(signToolPath: string, filePath: string, hashingAlgorithm: string, timeServer: string, signCertPassword: string): Promise<number> {
+  const signToolRunner: ToolRunner = tl.tool(signToolPath);
   let secureFilePath: string = tl.getTaskVariable("SECURE_FILE_PATH");
   console.log("Signing file: " + filePath);
 
@@ -26,13 +26,29 @@ async function run(): Promise<void> {
     let timeServer: string = tl.getInput("timeServer", true);
     let hashingAlgorithm: string = tl.getInput("hashingAlgorithm", true);
     let filesPattern: string = tl.getInput("files", true);
+    let signToolLocationMethod: string = tl.getInput("signToolLocationMethod", false);
+    let signToolPath = path.resolve(__dirname, "./signtool.exe");
+
+    if (signToolLocationMethod == "location") {
+      let customSignToolPath: string = tl.getInput("signToolLocation", true);
+      if (!customSignToolPath.endsWith("signtool.exe")) {
+        throw `The path ${customSignToolPath} is invalid. Please use only valid files (signtool.exe).`
+      }
+
+      if (fs.existsSync(customSignToolPath)) {
+        signToolPath = path.resolve(customSignToolPath);
+      }
+      else {
+        throw `There is no signtool available at ${customSignToolPath}`;
+      }
+    }
 
     let filesToSign: string[] = tl.findMatch(null, filesPattern);
     if (!filesToSign || filesToSign.length === 0) {
       throw new Error(tl.loc("NoMatchingFiles", filesPattern));
     }
     for (let filePath of filesToSign) {
-      await sign(filePath, hashingAlgorithm, timeServer, signCertPassword);
+      await sign(signToolPath, filePath, hashingAlgorithm, timeServer, signCertPassword);
       console.log("Job Finished: Successfully signed file " + filePath + " with given certificate.");
     }
   } catch (err) {

@@ -58,6 +58,26 @@
       "defaultValue": "SHA256",
       "required": true,
       "helpMarkDown": "The file digest algorithm to use for creating file signatures (i.e. SHA256 or SHA1)."
+    },
+    {
+      "name": "signToolLocationMethod",
+      "type": "radio",
+      "label": "Select signtool.exe location",
+      "required": false,
+      "defaultValue": "builtin",
+      "options": {
+        "builtin": "Built-in signtool",
+        "location": "Specific location"
+      }
+    },
+    {
+      "name": "signToolLocation",
+      "type": "string",
+      "label": "Path to signtool.exe",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Optionally supply the path to singtool.",
+      "visibleRule": "signToolLocationMethod = location"
     }
   ],
   "prejobexecution": {
