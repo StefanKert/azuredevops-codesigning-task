@@ -70,8 +70,6 @@ describe("CodeSigning Azure DevOps Extension", function (): void {
 
         tr.run();
 
-        console.log(tr.stdout);
-
         assert.equal(tr.invokedToolCount, 1);
         assert.equal(tr.succeeded, true, "should have succeeded");
         assert.equal(tr.warningIssues.length, 0, "should have no warnings");
