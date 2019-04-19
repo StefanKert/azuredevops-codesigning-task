@@ -66,8 +66,6 @@ function getLatestSignToolExe(): string {
   let signToolPaths: string[] = findFilesInDir(windowsKitDir, "signtool.exe");
   let latestWindowsSdkVersion: string = signToolPaths.map(x => x.replace(windowsKitDir, "").split("\\")[0]).pop();
   let latestWindowsSdkSignTools: string[] = signToolPaths.filter(x => x.startsWith(`${windowsKitDir}${latestWindowsSdkVersion}`));
-  console.log("SDKS: ", latestWindowsSdkVersion);
-  console.log("Signtoolpath:", latestWindowsSdkSignTools);
   let x64BitSignTool: string = latestWindowsSdkSignTools.find(x => x.includes("x64"));
   if (x64BitSignTool) {
     return x64BitSignTool;
