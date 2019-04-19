@@ -64,6 +64,22 @@ describe("CodeSigning Azure DevOps Extension", function (): void {
         done();
     });
 
+    it("Should call signtool with configured parameters and latest installed signtool", (done: MochaDone) => {
+        let tp: string = path.join(__dirname, "L0CodeSigningWithLatestVersionInstalled.js");
+        let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+
+        tr.run();
+
+        console.log(tr.stdout);
+
+        assert.equal(tr.invokedToolCount, 1);
+        assert.equal(tr.succeeded, true, "should have succeeded");
+        assert.equal(tr.warningIssues.length, 0, "should have no warnings");
+        assert.equal(tr.errorIssues.length, 0, "should have no errors");
+
+        done();
+    });
+
     it("Should call signtool for all files that match pattern", (done: MochaDone) => {
         let tp: string = path.join(__dirname, "L0CodeSigningMultipleFiles.js");
         let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);

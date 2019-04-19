@@ -67,7 +67,8 @@
       "defaultValue": "builtin",
       "options": {
         "builtin": "Built-in signtool",
-        "location": "Specific location"
+        "location": "Specific location",
+        "latest": "Latest version installed"
       }
     },
     {

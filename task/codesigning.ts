@@ -42,6 +42,9 @@ async function run(): Promise<void> {
         throw `There is no signtool available at ${customSignToolPath}`;
       }
     }
+    else if (signToolLocationMethod == "latest") {
+      signToolPath = getLatestSignToolExe();
+    }
 
     let filesToSign: string[] = tl.findMatch(null, filesPattern);
     if (!filesToSign || filesToSign.length === 0) {
@@ -54,6 +57,34 @@ async function run(): Promise<void> {
   } catch (err) {
     tl.setResult(tl.TaskResult.Failed, `${err}`);
   }
+}
+
+function getLatestSignToolExe() : string {
+  let windowsKitDir: string = "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\"
+  if (!fs.existsSync(windowsKitDir)) {
+    throw `There is no Windows 10 SDK installed at ${windowsKitDir}. You can choose a signtool with a custom path or use the built-in version.`;
+  }
+
+  let signToolPaths: string[] = findFilesInDir(windowsKitDir, "signtool.exe");
+  let relativeSignToolPaths: string[] = signToolPaths.map(x => x.replace(windowsKitDir, ''));
+  console.log(relativeSignToolPaths)
+  return relativeSignToolPaths[0];
+}
+
+function findFilesInDir(startPath: string, filter: string): string[] {
+  var results = [];
+  var files = fs.readdirSync(startPath);
+  for (var i = 0; i < files.length; i++) {
+    var filename = path.join(startPath, files[i]);
+    var stat = fs.lstatSync(filename);
+    if (stat.isDirectory()) {
+      results = results.concat(findFilesInDir(filename, filter));
+    }
+    else if (filename.endsWith(filter)) {
+      results.push(filename);
+    }
+  }
+  return results;
 }
 
 run();
