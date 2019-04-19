@@ -42,3 +42,8 @@ The following filetypes are tested and supported:
   - *Breaking Change*: Introduced wildcard support. To upgrade from 1.x you have to select the new version and use the filepath to sign files. For further information on how wildcards are supported check [this article](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/file-matching-patterns?view=azure-devops) (Fixes #5)
   - Updated SignTool to use the latest version (10.0.17763.132). With this new version the extensions *.appx* and *.appxbundle* are now officially supported. See #8 and #9 for details (big thanks to @qmatteoq for updating the signtool and bringing this up)
   - The new version should work with release tasks as well (#4)
+- 2.1.0
+  - Option to select signtool to use for signing
+    - Built-In: This is the default option. It uses the signtool.exe that comes along with the task
+    - Custom Path: With this option you can define a custom path that the task will use to sign your files. IMPORTANT: the custompath has to end with `signtool.exe`
+    - Latest version installed: This option uses the latest installed version on the current system. This only works on machines that have the Windows 10 SDK installed. The base path that is used for getting the signtool is `C:\Program Files (x86)\Windows Kits\10\bin`. The task grabs the latest installed version and tries to use the `x64` version of the .exe. If it is not available it uses `x86`. If the `x86` signtool is not available the task fails. If this is the case please check if the Windows 10 SDK is installed on your build agent. 
