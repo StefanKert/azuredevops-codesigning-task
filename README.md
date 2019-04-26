@@ -48,3 +48,4 @@ The following filetypes are tested and supported:
   - The new version should work with release tasks as well (#4)
 - 2.1.0
   - Added option to select signtool to use for signing (Built-in, custom path or latest installed)
+  - Reduced file size (12MB -> 1MB)
