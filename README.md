@@ -50,6 +50,5 @@ The following filetypes are tested and supported:
 - 2.1.0
   - Added option to select signtool to use for signing (Built-in, custom path or latest installed)
   - Reduced file size (12MB -> 1MB)
-  - 2.1.1
+- 2.1.1
   - Added description optional parameter
-  
