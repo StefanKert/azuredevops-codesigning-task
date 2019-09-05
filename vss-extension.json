@@ -2,9 +2,9 @@
     "manifestVersion": 1,
     "id": "codesigning",
     "name": "Code Signing",
-    "version": "2.1.1",
+    "version": "0.0.0",
     "public": true,
-    "publisher": "markmcgookin",
+    "publisher": "stefankert",
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
