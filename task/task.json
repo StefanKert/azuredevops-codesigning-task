@@ -72,6 +72,14 @@
       }
     },
     {
+      "name": "description",
+      "type": "string",
+      "label": "Add a description for the file being signed",
+      "required": false,
+      "defaultValue": "",
+      "helpMarkDown": "UAC will display this description when installing the signed file"
+    },
+    {
       "name": "signToolLocation",
       "type": "string",
       "label": "Path to signtool.exe",
