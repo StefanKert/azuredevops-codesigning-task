@@ -12,7 +12,7 @@ const hashingAlgorithm: string = "SHA256";
 const fileToSign: string = "DllToSign.dll";
 const description: string = "Description of dll";
 
-const signToolPath: string = "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.17763.0\\x64\\signtool.exe";
+const signToolPath: string = "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.18362.0\\x64\\signtool.exe";
 const certificatePath: string = path.join(__dirname, "./test-files", "TestCertificate.pfx");
 const filePaths: string = "DllToSign.dll";
 tmr.setInput("secureFileId", secureFileId);
