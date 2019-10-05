@@ -1,6 +1,6 @@
 {
   "name": "stefankert.azuredevops-codesigning-task",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Build task for Azure DevOps that gives the user the ability to codesign assemblies and applications.",
   "author": "Stefan Kert",
   "license": "MIT",

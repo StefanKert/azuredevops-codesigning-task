@@ -60,6 +60,14 @@
       "helpMarkDown": "The file digest algorithm to use for creating file signatures (i.e. SHA256 or SHA1)."
     },
     {
+      "name": "description",
+      "type": "string",
+      "label": "Add a description for the file being signed",
+      "required": false,
+      "defaultValue": "",
+      "helpMarkDown": "UAC will display this description when installing the signed file"
+    },
+    {
       "name": "signToolLocationMethod",
       "type": "radio",
       "label": "Select signtool.exe location",
@@ -70,14 +78,6 @@
         "location": "Specific location",
         "latest": "Latest version installed"
       }
-    },
-    {
-      "name": "description",
-      "type": "string",
-      "label": "Add a description for the file being signed",
-      "required": false,
-      "defaultValue": "",
-      "helpMarkDown": "UAC will display this description when installing the signed file"
     },
     {
       "name": "signToolLocation",
