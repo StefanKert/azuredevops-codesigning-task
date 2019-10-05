@@ -23,6 +23,7 @@ Parameters include:
     - Built-In: This is the default option. It uses the signtool.exe that comes along with the task
     - Custom Path: With this option you can define a custom path that the task will use to sign your files. IMPORTANT: the custompath has to end with `signtool.exe`
     - Latest version installed: This option uses the latest installed version on the current system. This only works on machines that have the Windows 10 SDK installed. The base path that is used for getting the signtool is `C:\Program Files (x86)\Windows Kits\10\bin`. The task grabs the latest installed version and tries to use the `x64` version of the .exe. If it is not available it uses `x86`. If the `x86` signtool is not available the task fails. If this is the case please check if the Windows 10 SDK is installed on your build agent. 
+- **Description**: A description to add to the file being signed
 
 ## Supported filetypes
 
@@ -49,3 +50,5 @@ The following filetypes are tested and supported:
 - 2.1.0
   - Added option to select signtool to use for signing (Built-in, custom path or latest installed)
   - Reduced file size (12MB -> 1MB)
+- 2.1.1
+  - Added description optional parameter

@@ -14,6 +14,9 @@ const fileToSign: string = "DllToSign.dll";
 const signToolPath: string = path.join(__dirname, "./test-files", "signtool.exe");
 const certificatePath: string = path.join(__dirname, "./test-files", "TestCertificate.pfx");
 const filePaths: string = "DllToSign.dll";
+
+const description = "Description of dll";
+
 tmr.setInput("secureFileId", secureFileId);
 tmr.setInput("signCertPassword", signCertPassword);
 tmr.setInput("timeServer", timeServer);
@@ -21,6 +24,7 @@ tmr.setInput("hashingAlgorithm", hashingAlgorithm);
 tmr.setInput("files", filePaths);
 tmr.setInput("signToolLocationMethod", "location");
 tmr.setInput("signToolLocation", signToolPath);
+tmr.setInput("description", description);
 tmr.setVariableName("SECURE_FILE_PATH", certificatePath);
 
 let answers: mockanswer.TaskLibAnswers = <mockanswer.TaskLibAnswers>{
@@ -31,7 +35,7 @@ let answers: mockanswer.TaskLibAnswers = <mockanswer.TaskLibAnswers>{
     },
     exec: {}
 };
-answers.exec[`${signToolPath} sign /fd ${hashingAlgorithm} /t ${timeServer} /f ${certificatePath} /p ${signCertPassword} ${fileToSign}`] = {
+answers.exec[`${signToolPath} sign /fd ${hashingAlgorithm} /t ${timeServer} /f ${certificatePath} /p ${signCertPassword} /d ${description} ${fileToSign}`] = {
     code: 0,
     stdout: `Successfully signed ${fileToSign}`
 };
