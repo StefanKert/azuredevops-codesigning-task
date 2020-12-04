@@ -3,7 +3,7 @@ import tl = require("azure-pipelines-task-lib/task");
 import { ToolRunner } from "azure-pipelines-task-lib/toolrunner";
 import fs = require("fs");
 
-async function sign(signToolPath: string, filePath: string, hashingAlgorithm: string, timeServer: string, signCertPassword: string, description: string): Promise<number> {
+async function sign(signToolPath: string, filePath: string, hashingAlgorithm: string, timeServer: string, signCertPassword: string, description: string, enableDebugSwitch: bool): Promise<number> {
   const signToolRunner: ToolRunner = tl.tool(signToolPath);
   let secureFilePath: string = tl.getTaskVariable("SECURE_FILE_PATH");
   console.log("Signing file: " + filePath);
@@ -13,6 +13,10 @@ async function sign(signToolPath: string, filePath: string, hashingAlgorithm: st
   signToolRunner.arg(["/t", timeServer]);
   signToolRunner.arg(["/f", secureFilePath]);
   signToolRunner.arg(["/p", signCertPassword]);
+  if(enableDebugSwitch){
+    signToolRunner.arg(["/debug"]);
+    signToolRunner.arg(["/v"]);
+  }
   if(description) {
     signToolRunner.arg(["/d", description]);
   }
@@ -27,6 +31,7 @@ async function run(): Promise<void> {
 
     let signCertPassword: string = tl.getInput("signCertPassword", true);
     let timeServer: string = tl.getInput("timeServer", true);
+    let enableDebugSwitch: string = tl.getInput("enableDebugSwitch", true);
     let hashingAlgorithm: string = tl.getInput("hashingAlgorithm", true);
     let filesPattern: string = tl.getInput("files", true);
     let signToolLocationMethod: string = tl.getInput("signToolLocationMethod", false);
@@ -53,7 +58,7 @@ async function run(): Promise<void> {
       throw new Error(tl.loc("NoMatchingFiles", filesPattern));
     }
     for (let filePath of filesToSign) {
-      await sign(signToolPath, filePath, hashingAlgorithm, timeServer, signCertPassword, description);
+      await sign(signToolPath, filePath, hashingAlgorithm, timeServer, signCertPassword, description, enableDebugSwitch);
       console.log("Job Finished: Successfully signed file " + filePath + " with given certificate.");
     }
   } catch (err) {
