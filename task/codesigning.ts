@@ -31,7 +31,7 @@ async function run(): Promise<void> {
 
     let signCertPassword: string = tl.getInput("signCertPassword", true);
     let timeServer: string = tl.getInput("timeServer", true);
-    let enableDebugSwitch: string = tl.getBoolInput("enableDebugSwitch", true);
+    let enableDebugSwitch: boolean = tl.getBoolInput("enableDebugSwitch", true);
     let hashingAlgorithm: string = tl.getInput("hashingAlgorithm", true);
     let filesPattern: string = tl.getInput("files", true);
     let signToolLocationMethod: string = tl.getInput("signToolLocationMethod", false);
