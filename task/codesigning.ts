@@ -3,7 +3,7 @@ import tl = require("azure-pipelines-task-lib/task");
 import { ToolRunner } from "azure-pipelines-task-lib/toolrunner";
 import fs = require("fs");
 
-async function sign(signToolPath: string, filePath: string, hashingAlgorithm: string, timeServer: string, signCertPassword: string, description: string, enableDebugSwitch: bool): Promise<number> {
+async function sign(signToolPath: string, filePath: string, hashingAlgorithm: string, timeServer: string, signCertPassword: string, description: string, enableDebugSwitch: boolean): Promise<number> {
   const signToolRunner: ToolRunner = tl.tool(signToolPath);
   let secureFilePath: string = tl.getTaskVariable("SECURE_FILE_PATH");
   console.log("Signing file: " + filePath);
@@ -31,7 +31,7 @@ async function run(): Promise<void> {
 
     let signCertPassword: string = tl.getInput("signCertPassword", true);
     let timeServer: string = tl.getInput("timeServer", true);
-    let enableDebugSwitch: string = tl.getInput("enableDebugSwitch", true);
+    let enableDebugSwitch: string = tl.getBoolInput("enableDebugSwitch", true);
     let hashingAlgorithm: string = tl.getInput("hashingAlgorithm", true);
     let filesPattern: string = tl.getInput("files", true);
     let signToolLocationMethod: string = tl.getInput("signToolLocationMethod", false);
