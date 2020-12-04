@@ -68,6 +68,14 @@
       "helpMarkDown": "UAC will display this description when installing the signed file"
     },
     {
+      "name": "enableDebugSwitch",
+      "type": "boolean",
+      "label": "Enable debug output from signtool.exe",
+      "required": false,
+      "defaultValue": false,
+      "helpMarkDown": "Enable debug output from signtool.exe"
+    },
+    {
       "name": "signToolLocationMethod",
       "type": "radio",
       "label": "Select signtool.exe location",
