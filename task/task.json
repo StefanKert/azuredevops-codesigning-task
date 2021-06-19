@@ -20,12 +20,34 @@
   "instanceNameFormat": "Code Signing $(filePath)",
   "inputs": [
     {
+      "name": "secureFileLocation",
+      "type": "radio",
+      "label": "Secure File Location",
+      "helpMarkDown": "Indicates where the secure file is located. Certificate can either be retrieved from the project's secure files library or a specific filesystem path on the build machine.",
+      "required": true,
+      "defaultValue": "azure",
+      "options": {
+        "azure": "Azure secure files library",
+        "filepath": "Local filepath"
+      }
+    },
+    {
       "name": "secureFileId",
       "type": "secureFile",
       "label": "Secure File",
       "defaultValue": "",
-      "required": true,
+      "required": false,
+      "visibleRule": "secureFileLocation = azure",
       "helpMarkDown": "Select the certificate that was uploaded to `Secure Files` to be used to sign the given files."
+    },
+    {
+      "name": "secureFileLocalPath",
+      "type": "string",
+      "label": "Secure File Path",
+      "defaultValue": "",
+      "required": false,
+      "visibleRule": "secureFileLocation = filepath",
+      "helpMarkDown": "Enter the filepath of the certificate to be used to sign the given files."
     },
     {
       "name": "signCertPassword",
