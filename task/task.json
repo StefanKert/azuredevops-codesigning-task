@@ -36,6 +36,7 @@
       "type": "secureFile",
       "label": "Secure File",
       "defaultValue": "",
+      "required": false,
       "visibleRule": "secureFileLocation = azure",
       "helpMarkDown": "Select the certificate that was uploaded to `Secure Files` to be used to sign the given files."
     },
@@ -44,6 +45,7 @@
       "type": "string",
       "label": "Secure File Path",
       "defaultValue": "",
+      "required": false,
       "visibleRule": "secureFileLocation = filepath",
       "helpMarkDown": "Enter the filepath of the certificate to be used to sign the given files."
     },
