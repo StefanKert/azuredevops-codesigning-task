@@ -52,3 +52,5 @@ The following filetypes are tested and supported:
   - Reduced file size (12MB -> 1MB)
 - 2.1.1
   - Added description optional parameter
+
+Important change!
