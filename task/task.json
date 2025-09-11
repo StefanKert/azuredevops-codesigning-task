@@ -90,22 +90,44 @@
     }
   ],
   "prejobexecution": {
-    "Node": {
-      "target": "precodesigning.js",
-      "argumentFormat": ""
-    }
-  },
-  "execution": {
-    "Node": {
-      "target": "codesigning.js"
-    }
-  },
-  "postjobexecution": {
-    "Node": {
-      "target": "postcodesigning.js",
-      "argumentFormat": ""
-    }
-  },
+        "Node": {
+            "target": "precodesigning.js",
+            "argumentFormat": ""
+        },
+        "Node10": {
+            "target": "precodesigning.js",
+            "argumentFormat": ""
+        },
+        "Node20_1": {
+            "target": "precodesigning.js",
+            "argumentFormat": ""
+        }
+    },
+    "execution": {
+        "Node": {
+            "target": "codesigning.js"
+        },
+        "Node10": {
+            "target": "codesigning.js"
+        },
+        "Node20_1": {
+            "target": "codesigning.js"
+        }
+    },
+    "postjobexecution": {
+        "Node": {
+            "target": "postcodesigning.js",
+            "argumentFormat": ""
+        },
+        "Node10": {
+            "target": "postcodesigning.js",
+            "argumentFormat": ""
+        },
+        "Node20_1": {
+            "target": "postcodesigning.js",
+            "argumentFormat": ""
+        }
+    },
   "messages": {
     "NoMatchingFiles": "No matching files were found with search pattern: %s",
     "DeleteSecureFileFailed": "Failed to delete secure file downloaded from the server: %s"
